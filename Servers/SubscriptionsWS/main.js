@@ -7,7 +7,6 @@ const { populateDatabase } = require("./utils/dataPopulationModule");
 
 const app = express();
 const connectDB = require('./configs/database');
-require("./configs/database");
 
 const cors = require("cors");
 const path = require("path");
@@ -24,6 +23,7 @@ populateDatabase().catch((err) => console.log(err));
 app.use(cors());
 app.use(express.json());
 
+//http://localhost:4321/members
 app.use("/members", memberRouter);
 app.use("/movies", movieRouter);
 app.use('/membersWS', memberWSRouter);
