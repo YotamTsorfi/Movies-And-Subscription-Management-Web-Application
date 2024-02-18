@@ -3,9 +3,10 @@ const rateLimit = require("express-rate-limit");
 
 //Routers
 const userRouter = require("./routers/UserRouter");
-const userFileRouter = require('./routers/usersFileRouter');
+const userFileRouter = require('./routers/UsersFileRouter');
 const permissionsFileRouter = require('./routers/permissionsFileRouter');
 const authRouter = require("./routers/authRouter");
+const combinedDataRouter = require("./routers/CombinedDataRouter");
 
 
 const app = express();
@@ -21,12 +22,12 @@ app.use(cors());
 app.use(express.json());
 
 // Enable rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
+// const limiter = rateLimit({
+//   windowMs: 20 * 60 * 1000, // 15 minutes
+//   max: 300 // limit each IP to 100 requests per windowMs
+// });
 
-app.use(limiter);
+//app.use(limiter);
 
 //TODO: needs to update Users.json with user's from DB (using just user _id, the rest of the fields:
 //firstName, lastName, createdDate, sessionTimeOut.
@@ -45,6 +46,9 @@ app.use("/permissionsfile", permissionsFileRouter);
 
 //http://localhost:4824/auth/
 app.use("/auth", authRouter);
+
+//http://localhost:4824/combinedData
+app.use("/combinedData", combinedDataRouter);
 
 app.use(express.static(path.join(__dirname, "public")));
 

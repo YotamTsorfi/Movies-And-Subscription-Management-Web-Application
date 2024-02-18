@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import Header from "./components/Header";
+import Login from "./components/Login";
+import CreateAccount from './components/CreateAccount';
+import Main from './components/Main';
+import ManageUsers from './components/ManageUsers';
+import Users from './components/Users';
+import EditUser from './components/EditUser';
+import AddUser from './components/AddUser';
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'USER_LOGOUT' }); 
+  }, []);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+        <Routes>
+          <Route  path="/" element={<Login />} />
+          <Route  path="/login" element={<Login />} />
+          <Route path="/create-account" element={<CreateAccount />} />
+          <Route path="/main" element={<Main />} />
+          <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/users/*" element={<Users />} />
+          <Route path="/edit-user/:id" element={<EditUser />} />
+          <Route path="/add-user" element={<AddUser />} />
+        </Routes>    
+    </Router>
   );
 }
 

@@ -46,7 +46,7 @@ const createUser = async (obj) => {
   try {
     let user = new UserModel({
       username: obj.username,
-      password: obj.password,      
+      password: "",      
     });
 
     await user.save();
@@ -91,6 +91,27 @@ const deleteUser = async (id) => {
   }
 };
 
+
+const updateUserPassword = async (username, password) => {
+// Hash the password
+//find the user by its username
+//update the password
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    await UserModel.findOneAndUpdate(
+      { username: username },
+      { password: hashedPassword }
+    ).exec();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+
+};
+
+
 module.exports = {
   registerUser,
   validatePassword,
@@ -101,4 +122,5 @@ module.exports = {
   updateSingleField,
   deleteUser,
   getUserByUsername,
+  updateUserPassword
 };

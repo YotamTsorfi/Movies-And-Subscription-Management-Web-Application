@@ -4,11 +4,46 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { createStore, applyMiddleware, combineReducers } from 'redux'; 
+import { Provider } from 'react-redux';
+import { userReducer } from './reducers/userReducer';
+import {thunk} from 'redux-thunk';
+
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { PersistGate } from 'redux-persist/integration/react';
+
+// Combine multiple reducers into a single root reducer
+const rootReducer = combineReducers({
+  user: userReducer,
+  // another: anotherReducer,
+});
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  //blacklist: ['username'] // user will not be persisted
+};
+
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Create the Redux store with the root reducer and apply the thunk middleware
+const store = createStore(
+  persistedReducer,
+  applyMiddleware(thunk) // apply the thunk middleware
+);
+
+const persistor = persistStore(store);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
