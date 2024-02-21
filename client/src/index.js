@@ -15,8 +15,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 // Combine multiple reducers into a single root reducer
 const rootReducer = combineReducers({
-  user: userReducer,
-  // another: anotherReducer,
+  user: userReducer
 });
 
 const persistConfig = {
