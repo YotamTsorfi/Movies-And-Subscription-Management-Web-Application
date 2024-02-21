@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { List, Typography, TextField, Button } from '@mui/material';
 import axios from 'axios';
 import Movie from './Movie';
+import { useNavigate } from 'react-router-dom';
 
 function AllMovies() {
 
@@ -10,6 +11,7 @@ function AllMovies() {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState(null);
+  const nevigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -51,6 +53,9 @@ function AllMovies() {
         All Movies
       </Typography>
       <TextField label="Search" variant="outlined" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+      <Button variant="contained" color="primary" onClick={() => nevigate('/add-movie')}>
+        Add Movie
+      </Button>
       <Button variant="contained" color="primary" onClick={handleSearch}>
         Find
       </Button>

@@ -15,6 +15,7 @@ import Movies from './components/Movies';
 import AllMovies from './components/AllMovies';
 import Movie from './components/Movie';
 import EditMovie from './components/EditMovie';
+import AddMovie from './components/AddMovie';
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
 
   useEffect(() => {
     dispatch({ type: 'USER_LOGOUT' }); 
-  }, []);
+  }, [dispatch]);
 
 
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/all-movies" element={<AllMovies />} />
           <Route path="/movie/:id" element={<Movie />} />
           <Route path="/edit-movie/:id" element={<EditMovie />} />
+          <Route path="/add-movie" element={<AddMovie />} />
         </Routes>    
     </Router>
   );

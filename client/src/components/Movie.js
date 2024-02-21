@@ -27,7 +27,7 @@ const Movie = ({ movie, handleDelete }) => {
         <Button variant="contained" color="primary" onClick={handleEdit}>
           Edit
         </Button>
-        <Button variant="contained" color="secondary" onClick={() => handleDelete(movie.id)}>
+        <Button variant="outlined" color="secondary" onClick={() => handleDelete(movie._id)}>
           Delete
         </Button>
       </CardContent>
