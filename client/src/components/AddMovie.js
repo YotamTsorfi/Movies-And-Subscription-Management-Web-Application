@@ -12,14 +12,15 @@ function AddMovie() {
     }
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
     
-        try {
-            const response = await axios.post('http://localhost:4321/movies/', movie);                     
-            nevigate('/all-movies');
-        } catch (error) {            
-            console.error('There was an error!', error);
-        }
+      try {
+        const response = await axios.post('http://localhost:4321/movies/', movie);                             
+        console.log('Response:', response);
+        nevigate('/all-movies');
+      } catch (error) {            
+        console.error('There was an error!', error);
+      }
     }
 
     const formatDate = (date) => {
@@ -39,6 +40,7 @@ function AddMovie() {
     
         return [year, month, day].join('-');
     }
+    
     const handleInputChange = (event) => {
         let { name, value } = event.target;
         if (name === 'Genres') {

@@ -1,18 +1,43 @@
-// SubscriptionsWatched.js
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { List, ListItem, ListItemText } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
-function SubscriptionsWatched({ subscriptions }) {
-  return (
-    <List component="nav">
-      {subscriptions.map(subscription => (
-        <ListItem button component={RouterLink} to={`/member/${subscription.id}`}>
-          <ListItemText primary={subscription.name} secondary={subscription.year} />
-        </ListItem>
-      ))}
-    </List>
-  );
+function SubscriptionWatched({ movieId }) {
+    const [watchedMembers, setWatchedMembers] = useState([]);
+
+    // useEffect(() => {
+    //     const fetchWatchedMembers = async () => {
+    //         try {
+    //             const response = await axios.get(`http://your-api-url/movies/${movieId}/watchedMembers`);
+    //             setWatchedMembers(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching watched members', error);
+    //         }
+    //     };
+
+    //     fetchWatchedMembers();
+    // }, [movieId]);
+
+    return (
+      <Card style={{ border: '2px solid black', marginBottom: '20px' }}>
+        <CardContent>
+         <h3>  SubscriptionWatched ...</h3>
+          {/* // <ul>
+          //     {watchedMembers.map(member => (
+          //         <li key={member.id}>
+          //             <Link to={`/members/${member.id}`}>
+          //                 {member.name}
+          //             </Link>
+          //             {' watched on '}
+          //             {new Date(member.dateWatched).toLocaleDateString()}
+          //         </li>
+          //     ))}
+          // </ul> */}
+          </CardContent>
+      </Card>
+    );
 }
 
-export default SubscriptionsWatched;
+export default SubscriptionWatched;

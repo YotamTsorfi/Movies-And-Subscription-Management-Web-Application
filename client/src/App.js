@@ -16,6 +16,10 @@ import AllMovies from './components/AllMovies';
 import Movie from './components/Movie';
 import EditMovie from './components/EditMovie';
 import AddMovie from './components/AddMovie';
+import Subscriptions from './components/Subscriptions';
+import AllMembers from './components/AllMembers';
+import EditMember from './components/EditMember';
+import AddMember from './components/AddMember';
 
 function App() {
 
@@ -43,6 +47,10 @@ function App() {
           <Route path="/movie/:id" element={<Movie />} />
           <Route path="/edit-movie/:id" element={<EditMovie />} />
           <Route path="/add-movie" element={<AddMovie />} />
+          <Route path="/all-members" element={<AllMembers />} />
+          <Route path="/subscriptions" element={<Subscriptions />} />
+          <Route path="/edit-member/:id" element={<EditMember />} />
+          <Route path="/add-member" element={<AddMember />} />
         </Routes>    
     </Router>
   );
