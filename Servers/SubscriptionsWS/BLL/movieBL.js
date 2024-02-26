@@ -58,6 +58,19 @@ const deleteMovie = async (id) => {
   }
 };
 
+
+const getUnwatchedMovies = async (watchedMovieIds) => {
+  try{
+    const allMovies = await getMovies();    
+    const unwatched = allMovies.filter(movie => !watchedMovieIds.includes(movie._id.toString()));
+    return unwatched;
+  }
+  catch(err){
+    throw err;
+  }
+};
+
+
 module.exports = {
   getMovies,
   getMovieById,
@@ -65,4 +78,5 @@ module.exports = {
   updateMovie,
   updateSingleField,
   deleteMovie,
+  getUnwatchedMovies,
 };

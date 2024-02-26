@@ -3,6 +3,7 @@ const memberRouter = require("./routers/MemberRouter");
 const movieRouter = require("./routers/MovieRouter");
 const memberWSRouter = require('./routers/memberWSRouter');
 const movieWSRouter = require('./routers/moviesWSRouter');
+const subscribeMovieRouter = require('./routers/SubscribeMovieRouter');
 const { populateDatabase } = require("./utils/dataPopulationModule");
 
 const app = express();
@@ -28,6 +29,7 @@ app.use("/members", memberRouter);
 app.use("/movies", movieRouter);
 app.use('/membersWS', memberWSRouter);
 app.use('/moviesWS', movieWSRouter);
+app.use('/subscriptions', subscribeMovieRouter);
 
 
 app.use(express.static(path.join(__dirname, "public")));

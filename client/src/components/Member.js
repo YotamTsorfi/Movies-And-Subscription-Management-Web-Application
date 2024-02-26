@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import WatchedMovie from './WatchedMovie';
-import SubscribeMovie from './SubscribeMovie';
+import MoviesWatched from './MoviesWatched';
+//import SubscribeMovie from './SubscribeMovie';
 
 function Member({ member }) {
 
     const nevigate = useNavigate();
-    const [showSubscribe, setShowSubscribe] = useState(false);
+   
 
     const handleEdit = () => {
         nevigate(`/edit-member/${member._id}`);
@@ -33,16 +33,8 @@ function Member({ member }) {
             {/* Render other member details here */}
             <button onClick={handleEdit}>Edit</button>
             <button onClick={handleDelete}>Delete</button>
-           
-            <h3>TODO: Watched Movies (Member Page)</h3>
-            //TODO {/* member.watchedMovies. */}  
-            {/* {member.watchedMovies.map(movie => (
-                <WatchedMovie key={member._id}/>
-            ))} */}
-            <button onClick={() => setShowSubscribe(!showSubscribe)}>
-                Subscribe to new movie
-            </button>
-            {/* {showSubscribe && <SubscribeMovie memberId={member._id} />} */}
+            <br/>        
+            <MoviesWatched memberId={member._id} />           
         </div>
     );
 }

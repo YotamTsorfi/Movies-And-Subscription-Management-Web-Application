@@ -27,11 +27,12 @@ const MoviesSchema = new mongoose.Schema(
 
 const SubscriptionSchema = new mongoose.Schema(
   {
-    MemberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Members' },
+    MemberId: { type: mongoose.Schema.Types.ObjectId, ref: 'members' },
     Movies: [
       {
-        movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movies' },
+        movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'movies' },
         date: Date,
+        _id: false 
       },
     ],
   },

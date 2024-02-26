@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function AddMember() {
+function AddMember(props) {
     const nevigate = useNavigate();
     const [member, setMember] = useState({
         Name: '',
@@ -27,7 +27,7 @@ function AddMember() {
     };
 
     const handleCancel = () => {
-        nevigate('/subscriptions');
+        props.resetMenuOption();
     };
 
     return (

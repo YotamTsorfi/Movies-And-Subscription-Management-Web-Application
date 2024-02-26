@@ -7,6 +7,10 @@ import CardContent from '@mui/material/CardContent';
 function SubscriptionWatched({ movieId }) {
     const [watchedMembers, setWatchedMembers] = useState([]);
 
+  // TODO : Will be render from Movie.js (Next to movie image)
+  // list of members who watched the movie and the date they watched it
+
+
     // useEffect(() => {
     //     const fetchWatchedMembers = async () => {
     //         try {
