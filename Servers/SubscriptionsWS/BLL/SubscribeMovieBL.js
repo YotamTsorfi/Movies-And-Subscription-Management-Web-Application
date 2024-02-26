@@ -24,4 +24,16 @@ const deleteSubscription = async (id) => {
     return await SubscriptionModel.findByIdAndDelete(id);
 };
 
-module.exports = { getSubscriptions, getMemberSubscriptions, addSubscription, updateSubscription, deleteSubscription };
+const getSubscriptionsByMovie = async (movieId) => {
+    const subscriptions = await SubscriptionModel.find({
+        Movies: { $elemMatch: { movieId } }
+    }).populate('MemberId', 'Name');
+
+    return subscriptions.map(subscription => ({
+        MemberId: subscription.MemberId._id,
+        MemberName: subscription.MemberId.Name,
+        date: subscription.Movies.find(movie => movie.movieId.toString() === movieId).date
+    }));
+};
+
+module.exports = {getSubscriptionsByMovie, getSubscriptions, getMemberSubscriptions, addSubscription, updateSubscription, deleteSubscription };

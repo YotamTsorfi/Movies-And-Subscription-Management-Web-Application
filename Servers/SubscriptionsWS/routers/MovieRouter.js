@@ -24,8 +24,8 @@ router.route("/:id").get(async function (req, res) {
 router.route("/").post(async function (req, res) {
   try {
     let obj = req.body;
-    let status = await movieBL.createMovie(obj);
-    res.json(status);
+    let movieId = await movieBL.createMovie(obj);
+    res.json(movieId);
   } catch (err) {
     res.status(500).send(err);
   }

@@ -2,26 +2,38 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addMovie } from '../actions/movieActions';
 
 function AddMovie() {
     const nevigate = useNavigate();
-    const [movie, setMovie] = useState({ Name: '', Genres: '', Director: '', Image: '', Premiered: ''});
+    const dispatch = useDispatch();
+    const [movie, setMovie] = useState({ Name: '', Genres: '', Image: '', Premiered: ''});
 
-    const cancelAdd = () => {
-        nevigate('/all-movies');
+    const cancelAdd = () => {      
+        nevigate('/movies');
+        window.location.reload();
     }
 
     const handleSubmit = async (event) => {
       event.preventDefault();
     
       try {
-        const response = await axios.post('http://localhost:4321/movies/', movie);                             
-        console.log('Response:', response);
-        nevigate('/all-movies');
+        const response = await axios.post('http://localhost:4321/movies/', movie); 
+        console.log('response.data: ', response.data); 
+
+        const newMovie = {
+          _id: response.data, 
+          ...movie, 
+        };
+
+        dispatch(addMovie(newMovie));
+        nevigate('/movies');
+        window.location.reload();
       } catch (error) {            
         console.error('There was an error!', error);
       }
-    }
+    };
 
     const formatDate = (date) => {
         if (!date || isNaN(Date.parse(date))) {
@@ -59,7 +71,7 @@ function AddMovie() {
     return (
         <form onSubmit={handleSubmit}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Edit Movie: {movie.Name}
+          Add Movie: {movie.Name}
         </Typography>
         <TextField style={{ width: '500px' }} value={movie.Name} label="Name" name="Name" onChange={handleInputChange} />
         <br />

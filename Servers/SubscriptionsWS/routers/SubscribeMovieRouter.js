@@ -3,6 +3,17 @@ const SubscriptionBLL = require('../BLL/SubscribeMovieBL')
 const MovieBLL = require('../BLL/movieBL')
 const router = express.Router();
 
+
+router.get('/', async (req, res) => {
+    try {
+      const AllSubscriptions = await SubscriptionBLL.getSubscriptions();
+      res.json(AllSubscriptions);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+
 // Get all subscriptions for a member
 router.get('/:memberId', async (req, res) => {
     try {
@@ -12,28 +23,6 @@ router.get('/:memberId', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-
-// Create a new subscription for a member
-// router.post('/:memberId', async (req, res) => {
-//     try {
-//         console.log('req.body', req.body);
-//         console.log('req.params.memberId', req.params.memberId);
-//         const newSubscription = await SubscriptionBLL.updateSubscription(req.params.memberId, req.body);
-//         res.status(201).json(newSubscription);
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// });
-
-// // Update a subscription for a member
-// router.put('/:memberId', async (req, res) => {
-//     try {
-//         const updatedSubscription = await SubscriptionBLL.updateSubscription(req.params.memberId, req.body.Movies);
-//         res.json(updatedSubscription);
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// });
 
 router.route('/create')
     .post(async (req, res) => {
@@ -83,5 +72,20 @@ router.get('/unwatched/:memberId', async (req, res) => {
         res.status(500).send('Error fetching unwatched movies');
     }
 });
+
+
+router.route('/movie/:movieId')
+    .get(async (req, res) => {
+        const { movieId } = req.params;
+
+        try {
+            const result = await SubscriptionBLL.getSubscriptionsByMovie(movieId);
+            res.status(200).json(result);
+        } catch (error) {
+            console.error(`Error fetching subscriptions for movie with id ${movieId}`, error);
+            res.status(500).json({ error: 'An error occurred while fetching the subscriptions' });
+        }
+    });
+
 
 module.exports = router;

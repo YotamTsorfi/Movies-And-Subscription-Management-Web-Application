@@ -4,11 +4,14 @@ import { useParams } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateMovie } from '../actions/movieActions';
 
 function EditMovie() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const nevigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -43,16 +46,18 @@ function EditMovie() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`http://localhost:4321/movies/${id}`, movie);
-      alert('Movie updated successfully');
-      nevigate('/all-movies');
+      await axios.put(`http://localhost:4321/movies/${id}`, movie);      
+      dispatch(updateMovie(id,movie));
+      nevigate('/movies');
+      window.location.reload();
     } catch (error) {
       console.error('Error updating movie', error);
     }
   };
 
   const cancelEdit = () => {
-    nevigate('/all-movies');
+    nevigate('/movies');
+    window.location.reload();
 }
 
 const formatDate = (date) => {

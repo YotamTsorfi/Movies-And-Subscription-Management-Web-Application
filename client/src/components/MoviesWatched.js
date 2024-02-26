@@ -35,6 +35,10 @@ function MoviesWatched({ memberId }) {
 
     const handleSubscribe = async () => {
         try {
+            if (!selectedMovie || !selectedDate) {
+                console.error('Movie and date are required');
+                return;
+            }
             const url = memberSubscriptions.length > 0
                 ? `http://localhost:4321/subscriptions/update/${memberId}`
                 : `http://localhost:4321/subscriptions/create`;

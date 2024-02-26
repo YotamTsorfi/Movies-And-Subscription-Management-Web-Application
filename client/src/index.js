@@ -7,6 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import { createStore, applyMiddleware, combineReducers } from 'redux'; 
 import { Provider } from 'react-redux';
 import { userReducer } from './reducers/userReducer';
+import { subscriptionReducer } from './reducers/subscriptionReducer';
+import { movieReducer } from './reducers/movieReducer';
 import {thunk} from 'redux-thunk';
 
 import { persistStore, persistReducer } from 'redux-persist';
@@ -15,7 +17,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 // Combine multiple reducers into a single root reducer
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  movie: movieReducer,
+  subscription: subscriptionReducer
 });
 
 const persistConfig = {
