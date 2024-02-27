@@ -1,53 +1,43 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
 
-// import SubscriptionWatched from './SubscriptionsWatched';
+const Movie = ({ movie, handleDelete, subscriptions }) => {
+  const navigate = useNavigate();
 
-const Movie = ({ movie, handleDelete }) => {
-  const nevigate = useNavigate();
-
-  const allSubscriptions = useSelector(state => state.subscription.subscriptions);
-  //TODO: const members = useSelector(state => state.member.members);
-
-    // Filter the subscriptions for the current movie
-    const movieSubscriptions = allSubscriptions.filter(subscription =>
-    subscription.Movies.some(m => m.movieId === movie._id)
-  );
-  
-  
   const handleEdit = () => {
-    nevigate(`/edit-movie/${movie._id}`);
+    navigate(`/edit-movie/${movie._id}`);
   };
 
   return (
-    <div style={{ border: '3px solid black', marginBottom: '20px' , width:'500px'}}>
-       
+    <div style={{ border: '3px solid black', marginBottom: '20px' , width:'500px'}}>       
         {movie.Name}, {new Date(movie.Premiered).getFullYear()}
         <br/>
         Genres: {movie.Genres.join(', ')}
         <br/>        
-        <img src={movie.Image} alt={movie.Name} style={{ width: '20%' }} />
-        {/* <SubscriptionWatched movieId={movie._id} /> */}
 
-        {/* {movieSubscriptions.map(subscription => {
-          // Find the member for this subscription
-          const member = members.find(member => member._id === subscription.MemberId);
 
-          return (
-            <div key={subscription._id}>
-              Member: {member ? member.name : 'Unknown'}
-              <br/>
-              Subscribe Date: {new Date(subscription.date).toLocaleDateString()}
-            </div>
-          );
-        })} */}
+        <div style={{ display: 'flex' }}>
+          <img src={movie.Image} alt={movie.Name} style={{ width: '20%' }} />
+          <div style={{ border: '1px solid black', padding: '10px', width: '50%' }}>
+            <strong>Subscriptions watched:</strong>
+            <ul>
+              {subscriptions.map(subscription => (
+                <li key={subscription.MemberId}>
+                  <Link to={`/edit-member/${subscription.MemberId}`}>
+                    {subscription.MemberName}
+                  </Link>, 
+                  {new Date(subscription.date).toLocaleDateString()}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
 
         <br/>
         <button onClick={handleEdit}>Edit</button>
         <button onClick={()=> handleDelete(movie._id)}>Delete</button>
         <br/>        
-        
     </div>
   );
 

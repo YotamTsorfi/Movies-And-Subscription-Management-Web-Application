@@ -1,38 +1,24 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addMovie } from '../actions/movieActions';
+import { addMovie } from '../actions/moviesActions';
 
 function AddMovie() {
-    const nevigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [movie, setMovie] = useState({ Name: '', Genres: '', Image: '', Premiered: ''});
 
     const cancelAdd = () => {      
-        nevigate('/movies');
+        navigate('/movies');
         window.location.reload();
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
       event.preventDefault();
-    
-      try {
-        const response = await axios.post('http://localhost:4321/movies/', movie); 
-        console.log('response.data: ', response.data); 
-
-        const newMovie = {
-          _id: response.data, 
-          ...movie, 
-        };
-
-        dispatch(addMovie(newMovie));
-        nevigate('/movies');
-        window.location.reload();
-      } catch (error) {            
-        console.error('There was an error!', error);
-      }
+      dispatch(addMovie(movie));
+      navigate('/movies');
+      window.location.reload();
     };
 
     const formatDate = (date) => {

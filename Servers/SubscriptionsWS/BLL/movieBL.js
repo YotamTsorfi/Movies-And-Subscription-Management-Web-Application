@@ -19,7 +19,7 @@ const createMovie = async (obj) => {
 
     await movie.save();
 
-    return movie._id;
+    return movie;
   } catch (err) {
     throw err;
   }

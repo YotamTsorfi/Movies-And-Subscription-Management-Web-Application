@@ -1,94 +1,85 @@
 // AllMovies.js
-import React, { useEffect, useState, useMemo , useCallback} from 'react';
-import axios from 'axios';
+import React, { useEffect, useState} from 'react';
 import Movie from './Movie';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMovies, deleteMovie, removeMovie } from '../actions/movieActions';
-import { setSubscriptions } from '../actions/subscriptionActions';
+import { fetchMovies, deleteMovie } from '../actions/moviesActions';
+import { fetchSubscriptions } from '../actions/subscriptionsActions';
+import { fetchMembers } from '../actions/membersActions';
 
 function AllMovies() {
   const dispatch = useDispatch();
+  const allMovies = useSelector(state => state.movies);
   const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState(null);
+  const [movies, setMovies] = useState([]);
   const navigate = useNavigate();
   const { movieId } = useParams(); 
 
-  const movies = useSelector((state) => state.movie.movies);
-  const subscriptions = useSelector((state) => state.subscriptions);
+  const allSubscriptions = useSelector(state => state.subscriptions);
+  const allMembers = useSelector(state => state.members);
 
-  const fetchMovies = useCallback(async () => {
-      try {    
-        const response = await axios.get('http://localhost:4321/movies');
-        dispatch(setMovies(response.data));      
-      } catch (error) {
-        setError(error.message);
-      }
-  }, [dispatch]);
-
-  const fetchSubscriptions = useCallback(async () => {
-    const response = await axios.get('http://localhost:4321/subscriptions');
-    dispatch(setSubscriptions(response.data));
+  useEffect(() => {
+    dispatch(fetchMovies());
+    dispatch(fetchSubscriptions());
+    dispatch(fetchMembers());
   }, [dispatch]);
 
   useEffect(() => {
-    if (movies.length === 0) {
-      fetchMovies();
-    }
-    fetchSubscriptions();
-  }, [fetchMovies, fetchSubscriptions, movies.length]);
+    setMovies(allMovies);
+  }, [allMovies]);
 
-  // useEffect(() => {
-  //   movies.forEach(movie => {
-  //     if (!movie._id) {
-  //       dispatch(removeMovie(movie));
-  //     }
-  //   });
-  // }, [dispatch, movies]);
+  useEffect(() => {
+    if (movieId) {
+      const movie = allMovies.find(movie => movie._id === movieId);
+      setMovies(movie ? [movie] : []);
+    }
+  }, [movieId, allMovies]);
 
   const handleSearch = () => {
-    const filtered = movies.filter(movie => movie.Name.toLowerCase().includes(searchTerm.toLowerCase()));
-    //setFilteredMovies(filtered);
-    dispatch(setMovies(filtered));
+    const filteredMovies = allMovies.filter(movie =>
+      movie.Name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setMovies(filteredMovies);
   };
 
-  const displayedMovies = useMemo(() => {
-    return movies.filter(movie => (!movieId || movie._id === movieId));
-  }, [movies, movieId]);
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:4321/movies/${id}`);
-      if (response.status === 200) {
-        // Wait for fetchData to complete before continuing
-        //await fetchMovies();
-        dispatch(deleteMovie(id));
-      }
-    } catch (error) {
-      console.error(`Error deleting movie with id ${id}`, error);
-    }
+  const handleDelete = (id) => {
+    dispatch(deleteMovie(id));
   };
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div style={{ border: '3px solid black', marginBottom: '20px' , width:'800px'}}>
-    <h3>All Movies</h3>
-    Find Movie: <input type="text" name="search" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-    <button onClick={handleSearch}>Find</button>
-    <button onClick={() => navigate('/main')}>Main</button>
-        {displayedMovies.map(movie => (
-        <Movie 
-          key={movie._id} 
-          movie={movie}         
-          handleDelete={handleDelete} 
-          />
-        ))}
-    </div>
+      <h3>All Movies</h3>
+      Find Movie: <input type="text" name="search" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+      <button onClick={handleSearch}>Find</button>
+      <button onClick={() => navigate('/main')}>Main</button>
 
+      {movies.map(movie => {
+        const movieSubscriptions = allSubscriptions
+          .filter(subscription => subscription.Movies.some(m => m.movieId === movie._id))
+          .map(subscription => {            
+            const member = allMembers.find(member => member._id === subscription.MemberId);
+            const movieSubscription = subscription.Movies.find(m => m.movieId === movie._id);
+
+            return {
+              MemberId: subscription.MemberId,
+              MemberName: member ? member.Name : 'Unknown',
+              date: movieSubscription.date
+            };
+          });
+
+        return (
+          <Movie 
+            key={movie._id} 
+            movie={movie}         
+            handleDelete={handleDelete} 
+            subscriptions={movieSubscriptions}
+          />
+        );
+      })}
+    </div>
   );
+
+
 }
 
 export default AllMovies;

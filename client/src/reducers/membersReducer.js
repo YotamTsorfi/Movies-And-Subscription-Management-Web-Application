@@ -8,6 +8,8 @@ export const membersReducer = (state = [], action) => {
       return state.map(member =>
         member._id === action.payload._id ? action.payload : member
       );
+    case 'DELETE_MEMBER':
+      return state.filter(member => member._id !== action.payload);
     default:
       return state;
   }

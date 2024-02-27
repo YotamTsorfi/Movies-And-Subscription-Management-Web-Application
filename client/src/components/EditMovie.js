@@ -2,29 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { updateMovie } from '../actions/movieActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateMovie } from '../actions/moviesActions';
 
 function EditMovie() {
   const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const allMovies = useSelector(state => state.movies);
+  const [movie, setMovie] = useState(null);
+  
   useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const response = await axios.get(`http://localhost:4321/movies/${id}`);
-        setMovie(response.data);
-      } catch (error) {
-        console.error('Error fetching movie', error);
-      }
-    };
-
-    fetchMovie();
-  }, [id]);
+    const movieToEdit = allMovies.find(movie => movie._id === id);
+    setMovie(movieToEdit);
+  }, [id, allMovies]);
 
   const handleInputChange = (event) => {
     let { name, value } = event.target;
@@ -43,20 +35,14 @@ function EditMovie() {
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.put(`http://localhost:4321/movies/${id}`, movie);      
-      dispatch(updateMovie(id,movie));
-      nevigate('/movies');
-      window.location.reload();
-    } catch (error) {
-      console.error('Error updating movie', error);
-    }
-  };
+const handleSubmit = (event) => {
+  event.preventDefault();
+  dispatch(updateMovie(movie));
+  navigate('/movies');
+};
 
   const cancelEdit = () => {
-    nevigate('/movies');
+    navigate('/movies');
     window.location.reload();
 }
 
