@@ -1,27 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { deleteMember } from '../actions/membersActions';
 import MoviesWatched from './MoviesWatched';
 //import SubscribeMovie from './SubscribeMovie';
 
-function Member({ member }) {
-
-    const nevigate = useNavigate();
+function Member({ member }) {    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
    
-
     const handleEdit = () => {
-        nevigate(`/edit-member/${member._id}`);
+        navigate(`/edit-member/${member._id}`);
     };
 
-    const handleDelete = async () => {
-        try {
-            await axios.delete(`http://localhost:4321/members/${member._id}`);
-            // Refresh the page after successful deletion
-            window.location.reload();
-        } catch (error) {
-            console.error(`Error deleting member with id ${member._id}`, error);
-        }
-    };
+    const handleDelete = () => {
+        dispatch(deleteMember(member._id));
+        window.location.reload();
+      };
 
     return (
         <div style={{ border: '3px solid black', marginBottom: '20px' , width:'500px'}}>

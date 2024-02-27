@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addMember } from '../actions/membersActions';
 
 function AddMember(props) {
-    const nevigate = useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [member, setMember] = useState({
         Name: '',
         Email: '',
@@ -17,13 +19,10 @@ function AddMember(props) {
         });
     };
 
-    const handleSave = async () => {
-        try {
-            await axios.post('http://localhost:4321/members/', member);
-            nevigate('/subscriptions');
-        } catch (error) {
-            console.error('Error creating member', error);
-        }
+    const handleSave = () => {
+        dispatch(addMember(member));
+        navigate('/subscriptions');
+        window.location.reload();
     };
 
     const handleCancel = () => {

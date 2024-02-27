@@ -82,8 +82,7 @@ function AllMovies() {
         {displayedMovies.map(movie => (
         <Movie 
           key={movie._id} 
-          movie={movie} 
-          subscriptions={subscriptions} 
+          movie={movie}         
           handleDelete={handleDelete} 
           />
         ))}

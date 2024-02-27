@@ -33,3 +33,6 @@ export const setMovies = (movies) => {
       payload: movie,
     };
   };
+
+
+  

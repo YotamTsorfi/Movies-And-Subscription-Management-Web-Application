@@ -24,8 +24,8 @@ router.route("/:id").get(async function (req, res) {
 router.route("/").post(async function (req, res) {
   try {
     let obj = req.body;
-    let status = await memberBL.createMember(obj);
-    res.json(status);
+    let newMember = await memberBL.createMember(obj);
+    res.json(newMember);
   } catch (err) {
     res.status(500).send(err);
   }

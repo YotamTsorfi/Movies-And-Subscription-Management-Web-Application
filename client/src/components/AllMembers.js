@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMembers } from '../actions/membersActions';
 import Member from './Member';
 
-function AllMembers() {
-    const [members, setMembers] = useState([]);
+function AllMembers() {    
+    const dispatch = useDispatch();
+    const members = useSelector(state => state.members);
 
     useEffect(() => {
-        const fetchMembers = async () => {
-            try {
-                const response = await axios.get('http://localhost:4321/members/');
-                setMembers(response.data);
-            } catch (error) {
-                console.error('Error fetching members', error);
-            }
-        };
-
-        fetchMembers();
-    }, []);
+        dispatch(fetchMembers());
+      }, [dispatch]);
 
     return (
         <div style={{ border: '3px solid black', marginBottom: '20px' , width:'800px'}}>

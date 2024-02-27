@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { userReducer } from './reducers/userReducer';
 import { subscriptionReducer } from './reducers/subscriptionReducer';
 import { movieReducer } from './reducers/movieReducer';
+import {membersReducer} from './reducers/membersReducer';
 import {thunk} from 'redux-thunk';
 
 import { persistStore, persistReducer } from 'redux-persist';
@@ -19,7 +20,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 const rootReducer = combineReducers({
   user: userReducer,
   movie: movieReducer,
-  subscription: subscriptionReducer
+  subscription: subscriptionReducer,
+  members: membersReducer
 });
 
 const persistConfig = {

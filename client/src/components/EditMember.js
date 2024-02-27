@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { editMember } from '../actions/membersActions';
 
 function EditMember() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const members = useSelector(state => state.members);
     const [member, setMember] = useState({
         Name: '',
         Email: '',
@@ -12,17 +15,11 @@ function EditMember() {
     });
 
     useEffect(() => {
-        const fetchMember = async () => {
-            try {
-                const response = await axios.get(`http://localhost:4321/members/${id}`);
-                setMember(response.data);
-            } catch (error) {
-                console.error(`Error fetching member with id ${id}`, error);
-            }
-        };
-
-        fetchMember();
-    }, [id]);
+      const memberToEdit = members.find(m => m._id === id);
+      if (memberToEdit) {
+          setMember(memberToEdit);
+      }
+  }, [id, members]);
 
     const handleChange = (event) => {
         setMember({
@@ -31,14 +28,10 @@ function EditMember() {
         });
     };
 
-    const handleUpdate = async () => {
-        try {
-            await axios.put(`http://localhost:4321/members/${id}`, member);
-            navigate('/subscriptions');
-        } catch (error) {
-            console.error(`Error updating member with id ${id}`, error);
-        }
-    };
+    const handleUpdate = () => {
+      dispatch(editMember(member));
+      navigate('/subscriptions');
+  };
 
     const handleCancel = () => {
         navigate('/subscriptions');

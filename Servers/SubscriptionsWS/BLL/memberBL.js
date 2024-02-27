@@ -16,9 +16,11 @@ const createMember = async (obj) => {
       City: obj.City,
     });
 
-    await member.save();
+    //await member.save();
+    const savedMember = await member.save();
 
-    return member._id;
+    //return member._id;
+    return savedMember;
   } catch (err) {
     throw err;
   }
