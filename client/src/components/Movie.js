@@ -14,8 +14,6 @@ const Movie = ({ movie, handleDelete, subscriptions }) => {
         <br/>
         Genres: {movie.Genres.join(', ')}
         <br/>        
-
-
         <div style={{ display: 'flex' }}>
           <img src={movie.Image} alt={movie.Name} style={{ width: '20%' }} />
           <div style={{ border: '1px solid black', padding: '10px', width: '50%' }}>
@@ -32,8 +30,6 @@ const Movie = ({ movie, handleDelete, subscriptions }) => {
             </ul>
           </div>
         </div>
-
-
         <br/>
         <button onClick={handleEdit}>Edit</button>
         <button onClick={()=> handleDelete(movie._id)}>Delete</button>

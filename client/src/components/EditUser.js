@@ -41,7 +41,10 @@ function EditUser() {
       setUser({ ...userData, firstName, lastName });
         
       // Set the initial permissions based on the user data
-      setPermissions(response.data.Permissions.reduce((acc, permission) => ({ ...acc, [permission]: true }), {}));
+      setPermissions(prevPermissions => ({
+        ...prevPermissions,
+        ...userData.Permissions.reduce((acc, permission) => ({ ...acc, [permission]: true }), {})
+      }));
     };
 
     fetchUser();

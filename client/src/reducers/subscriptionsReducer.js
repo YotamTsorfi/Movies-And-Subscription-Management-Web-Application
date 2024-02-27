@@ -1,9 +1,7 @@
 export const subscriptionsReducer = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_SUBSCRIPTIONS':
-      return action.payload;
-    // case 'FETCH_SUBSCRIPTIONS_BY_MOVIE_ID':
-    //   return action.payload;      
+      return action.payload;   
     case 'ADD_SUBSCRIPTION':
       return [...state, action.payload];
     case 'EDIT_SUBSCRIPTION':
