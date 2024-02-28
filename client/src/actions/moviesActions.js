@@ -18,5 +18,6 @@ export const updateMovie = movie => async dispatch => {
 
 export const deleteMovie = id => async dispatch => {
   await axios.delete(`http://localhost:4321/movies/${id}`);
+  await axios.delete(`http://localhost:4321/subscriptions/deleteMovie/${id}`);
   dispatch({ type: 'DELETE_MOVIE', payload: id });
 };

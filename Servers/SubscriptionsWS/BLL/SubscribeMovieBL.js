@@ -36,4 +36,26 @@ const getSubscriptionsByMovie = async (movieId) => {
     }));
 };
 
-module.exports = {getSubscriptionsByMovie, getSubscriptions, getMemberSubscriptions, addSubscription, updateSubscription, deleteSubscription };
+const deleteSubscriptionByMemberId = async (memberId) => {
+    try {
+        const result = await SubscriptionModel.findOneAndDelete({ MemberId: memberId });
+        return result;
+    } catch (err) {
+        throw err;
+    }
+}
+
+
+const deleteMovieFromSubscriptions = async (movieId) => {
+    try {
+        const result = await SubscriptionModel.updateMany(
+            {}, 
+            { $pull: { Movies: { movieId: movieId } } }
+        );
+        return result;
+    } catch (err) {
+        throw err;
+    }
+}
+
+module.exports = {deleteMovieFromSubscriptions, deleteSubscriptionByMemberId, getSubscriptionsByMovie, getSubscriptions, getMemberSubscriptions, addSubscription, updateSubscription, deleteSubscription };

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteMember } from '../actions/membersActions';
 import MoviesWatched from './MoviesWatched';
-//import SubscribeMovie from './SubscribeMovie';
 
 function Member({ member }) {    
     const navigate = useNavigate();
@@ -14,7 +13,7 @@ function Member({ member }) {
     };
 
     const handleDelete = () => {
-        dispatch(deleteMember(member._id));
+        dispatch(deleteMember(member._id));        
         window.location.reload();
       };
 

@@ -18,5 +18,6 @@ export const editMember = member => async dispatch => {
 
 export const deleteMember = id => async dispatch => {
   await axios.delete(`http://localhost:4321/members/${id}`);
+  await axios.delete(`http://localhost:4321/subscriptions/deleteByMemberId/${id}`);
   dispatch({ type: 'DELETE_MEMBER', payload: id });
 };

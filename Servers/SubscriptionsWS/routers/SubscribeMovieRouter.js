@@ -88,4 +88,22 @@ router.route('/movie/:movieId')
     });
 
 
+    router.delete('/deleteByMemberId/:memberId', async (req, res) => {
+        try {
+            const result = await SubscriptionBLL.deleteSubscriptionByMemberId(req.params.memberId);
+            res.json(result);
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    });
+
+    router.delete('/deleteMovie/:movieId', async (req, res) => {
+        try {
+            const result = await SubscriptionBLL.deleteMovieFromSubscriptions(req.params.movieId);
+            res.json(result);
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    });    
+
 module.exports = router;
