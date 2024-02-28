@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addMember } from '../actions/membersActions';
 
 function AddMember(props) {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [member, setMember] = useState({
         Name: '',
@@ -21,7 +19,6 @@ function AddMember(props) {
 
     const handleSave = () => {
         dispatch(addMember(member));
-        navigate('/subscriptions');
         window.location.reload();
     };
 

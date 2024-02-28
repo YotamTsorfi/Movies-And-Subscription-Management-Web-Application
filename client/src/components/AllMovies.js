@@ -1,7 +1,7 @@
 // AllMovies.js
 import React, { useEffect, useState} from 'react';
 import Movie from './Movie';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies, deleteMovie } from '../actions/moviesActions';
 import { fetchSubscriptions } from '../actions/subscriptionsActions';
@@ -12,7 +12,6 @@ function AllMovies() {
   const allMovies = useSelector(state => state.movies);
   const [searchTerm, setSearchTerm] = useState('');
   const [movies, setMovies] = useState([]);
-  const navigate = useNavigate();
   const { movieId } = useParams(); 
 
   const allSubscriptions = useSelector(state => state.subscriptions);
@@ -51,7 +50,6 @@ function AllMovies() {
       <h3>All Movies</h3>
       Find Movie: <input type="text" name="search" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
       <button onClick={handleSearch}>Find</button>
-      <button onClick={() => navigate('/main')}>Main</button>
 
       {movies.map(movie => {
         const movieSubscriptions = allSubscriptions

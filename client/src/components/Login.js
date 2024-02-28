@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Link } from '@mui/material';
 import  {loginUser}  from '../actions/userActions';
@@ -8,28 +8,23 @@ function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
+  const { token, error } = useSelector(state => state.user);
 
-    event.preventDefault();
-
-    try {
-      const loginSuccessful = await dispatch(loginUser(username, password));
-      if (loginSuccessful) {
-        navigate('/main');
-        //console.log('Login successful');
-      }
-      else {
-        setError('Failed to log in. Please try again.');
-      }
-    } catch (err) {
-      setError('Failed to log in. Please try again.');
+  useEffect(() => {
+    if (token) {
+      navigate('/main');
     }
+  }, [token, navigate]);
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    dispatch(loginUser(username, password));
   };
+
 
   return (
     <div>

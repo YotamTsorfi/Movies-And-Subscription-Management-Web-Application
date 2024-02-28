@@ -28,7 +28,8 @@ function Movies() {
     <div style={{ border: '3px solid black', marginBottom: '20px' , width:'900px'}}> 
         <h3>Movies</h3>
         <button onClick={() => handleMenuChange('All Movies')}>All Movies</button>
-        <button onClick={() => handleMenuChange('Add Movie')}>Add Movie</button>        
+        <button onClick={() => handleMenuChange('Add Movie')}>Add Movie</button>  
+        <button onClick={() => navigate('/main')}>Main</button>      
         <button onClick={handleLogout}>Log Out</button>
         <br/><br/>
         {menuOption === 'All Movies' && <AllMovies />}

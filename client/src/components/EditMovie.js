@@ -35,15 +35,18 @@ function EditMovie() {
     });
   };
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  dispatch(updateMovie(movie));
-  navigate('/movies');
-};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await dispatch(updateMovie(movie));
+      navigate('/movies');  
+    } catch (error) {
+      console.error('Failed to update movie:', error);
+    }
+  };
 
   const cancelEdit = () => {
     navigate('/movies');
-    window.location.reload();
 }
 
 const formatDate = (date) => {

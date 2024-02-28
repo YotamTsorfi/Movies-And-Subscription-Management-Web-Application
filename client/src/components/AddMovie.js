@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addMovie } from '../actions/moviesActions';
 
 function AddMovie() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [movie, setMovie] = useState({ Name: '', Genres: '', Image: '', Premiered: ''});
 
     const cancelAdd = () => {      
-        navigate('/movies');
         window.location.reload();
     }
 
     const handleSubmit = (event) => {
       event.preventDefault();
       dispatch(addMovie(movie));
-      navigate('/movies');
       window.location.reload();
     };
 

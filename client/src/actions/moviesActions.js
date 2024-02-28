@@ -12,8 +12,13 @@ export const addMovie = movie => async dispatch => {
 };
 
 export const updateMovie = movie => async dispatch => {
-  const response = await axios.put(`http://localhost:4321/movies/${movie._id}`, movie);
-  dispatch({ type: 'UPDATE_MOVIE', payload: response.data });
+  try {
+    const response = await axios.put(`http://localhost:4321/movies/${movie._id}`, movie);
+    dispatch({ type: 'UPDATE_MOVIE', payload: response.data });
+    return Promise.resolve(response.data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const deleteMovie = id => async dispatch => {
