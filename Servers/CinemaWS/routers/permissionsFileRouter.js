@@ -1,9 +1,7 @@
 const express = require('express');
 const permissionsFileBL = require('../BLL/permissionsFileBL');
-
 const router = express.Router();
 
-//TODO
 //http://localhost:4824/permissionsfile
 router.route('/')
     .get(async (req, resp) => {

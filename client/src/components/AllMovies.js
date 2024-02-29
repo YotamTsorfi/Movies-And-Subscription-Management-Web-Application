@@ -14,6 +14,7 @@ function AllMovies() {
   const [movies, setMovies] = useState([]);
   const { movieId } = useParams(); 
 
+  const permissions = useSelector((state) => state.user.permissions);
   const allSubscriptions = useSelector(state => state.subscriptions);
   const allMembers = useSelector(state => state.members);
 
@@ -71,6 +72,7 @@ function AllMovies() {
             movie={movie}         
             handleDelete={handleDelete} 
             subscriptions={movieSubscriptions}
+            permissions={permissions} 
           />
         );
       })}

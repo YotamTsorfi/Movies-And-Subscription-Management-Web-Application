@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
             RSA_PRIVATE_KEY,
             { expiresIn: '1h' });
 
-        res.json({ token: token });
+        res.json({ token: token, userId: userObject._id});
     } else {
       res.status(401).json({ message: 'Invalid password' });
     }

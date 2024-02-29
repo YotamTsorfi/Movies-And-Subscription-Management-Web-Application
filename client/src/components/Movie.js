@@ -1,12 +1,24 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Movie = ({ movie, handleDelete, subscriptions }) => {
+const Movie = ({ movie, handleDelete, subscriptions, permissions }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    navigate(`/edit-movie/${movie._id}`);
+    if (permissions.includes('Update Movies')) { // Check the permissions before navigating
+      navigate(`/edit-movie/${movie._id}`);
+    } else {
+      alert('You do not have permission to edit movies.');
+    }
   };
+
+  const handleDeleteClick = () => {
+    if (permissions.includes('Delete Movies')) { // Check the permissions before deleting
+      handleDelete(movie._id);
+    } else {
+      alert('You do not have permission to delete movies.');
+    }
+  }; 
 
   return (
     <div style={{ border: '3px solid black', marginBottom: '20px' , width:'500px'}}>       
@@ -32,7 +44,7 @@ const Movie = ({ movie, handleDelete, subscriptions }) => {
         </div>
         <br/>
         <button onClick={handleEdit}>Edit</button>
-        <button onClick={()=> handleDelete(movie._id)}>Delete</button>
+        <button onClick={handleDeleteClick}>Delete</button>
         <br/>        
     </div>
   );

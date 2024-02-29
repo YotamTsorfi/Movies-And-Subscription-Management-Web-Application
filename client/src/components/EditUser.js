@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserPermissions } from '../actions/userActions';
 
 function EditUser() {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.userId);
+
   const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState({
@@ -78,7 +83,13 @@ function EditUser() {
     try {
       const response = await axios.put(`http://localhost:4824/combinedData/${user.Id}`, { ...user, Permissions: permissions });
       if (response.status === 200) {
-        console.log(`User ${user["User Name"]} updated successfully`);      
+        console.log(`User ${user["User Name"]} updated successfully`);     
+        
+        // If the currently logged-in user is being updated, update the permissions in the Redux store
+        if (user.Id === userId) {
+          dispatch(updateUserPermissions(permissions));
+        }        
+
         navigate('/users');
       }
     } catch (error) {

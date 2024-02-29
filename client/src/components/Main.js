@@ -7,7 +7,8 @@ import { logoutUser } from '../actions/userActions';
 function Main() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const token = useSelector((state) => state.user.token);
+  const permissions = useSelector((state) => state.user.permissions);
   const isAdmin = useSelector((state) => state.user.isAdmin);
   
   const handleLogout = () => {
@@ -15,16 +16,37 @@ function Main() {
     navigate('/login');
   };
 
+  const handleMoviesClick = () => {
+    if (permissions.includes('View Movies')) {
+      navigate('/movies');
+    } else {
+      alert('You do not have permission to view movies.');
+    }
+  };
+
+  const handleSubscriptionsClick = () => {
+    if (permissions.includes('View Subscriptions')) {
+      navigate('/subscriptions');
+    } else {
+      alert('You do not have permission to view subscriptions.');
+    }
+  };
+
+  if (!token) {
+    navigate('/login');
+    return null;
+  }
+  
   return (
     <div>
       <Typography variant="h4" component="h1" gutterBottom>
         Main Page
       </Typography>
       <List component="nav">
-        <ListItem button component={RouterLink} to="/movies">
+        <ListItem button onClick={handleMoviesClick}>
           <ListItemText primary="Movies" />
         </ListItem>
-        <ListItem button component={RouterLink} to="/subscriptions">
+        <ListItem button onClick={handleSubscriptionsClick}>
           <ListItemText primary="Subscriptions" />
         </ListItem>
         {isAdmin && (

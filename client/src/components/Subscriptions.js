@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import AllMembers from './AllMembers';
 import AddMember from './AddMember';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Subscriptions() {
     const [menuOption, setMenuOption] = useState('All Members');
     const navigate = useNavigate();
+    const token = useSelector((state) => state.user.token);
+
+    if (!token) {
+        navigate('/login');
+        return null;
+    }
 
     const handleMenuChange = (option) => {
         setMenuOption(option);

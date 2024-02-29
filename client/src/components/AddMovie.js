@@ -3,18 +3,18 @@ import { TextField, Button, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { addMovie } from '../actions/moviesActions';
 
-function AddMovie() {
+function AddMovie({ resetMenuOption }) {
     const dispatch = useDispatch();
     const [movie, setMovie] = useState({ Name: '', Genres: '', Image: '', Premiered: ''});
 
     const cancelAdd = () => {      
-        window.location.reload();
+      resetMenuOption();
     }
 
     const handleSubmit = (event) => {
       event.preventDefault();
       dispatch(addMovie(movie));
-      window.location.reload();
+      resetMenuOption();
     };
 
     const formatDate = (date) => {
