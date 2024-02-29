@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -11,18 +11,19 @@ function MoviesWatched({ memberId }) {
     const [selectedMovie, setSelectedMovie] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
 
-    const fetchSubscriptions = async () => {
+    const fetchSubscriptions = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:4321/subscriptions//${memberId}`);
-            setMemberSubscriptions(response.data);
+          const response = await axios.get(`http://localhost:4321/subscriptions//${memberId}`);
+          setMemberSubscriptions(response.data);
         } catch (error) {
-            console.error(`Error fetching subscriptions for member with id ${memberId}`, error);
+          console.error(`Error fetching subscriptions for member with id ${memberId}`, error);
         }
-    };
+      }, [memberId]); // fetchSubscriptions is recreated only when memberId changes
+      
 
     useEffect(() => {
         fetchSubscriptions();
-    }, [memberId]);
+    }, [fetchSubscriptions]);
 
     const fetchUnwatchedMovies = async () => {
         try {
@@ -35,7 +36,7 @@ function MoviesWatched({ memberId }) {
 
     const handleSubscribe = async () => {
         try {
-            if (!selectedMovie || !selectedDate) {
+            if (selectedMovie === ""  || !selectedDate) {
                 console.error('Movie and date are required');
                 return;
             }
@@ -74,6 +75,7 @@ function MoviesWatched({ memberId }) {
             {showSubscribe && (
                 <div>
                     <select onChange={(e) => setSelectedMovie(e.target.value)}>
+                        <option value="">Select a movie</option>
                         {unwatchedMovies.map((movie) => (
                             <option key={movie._id} value={movie._id}>{movie.Name}</option>
                         ))}

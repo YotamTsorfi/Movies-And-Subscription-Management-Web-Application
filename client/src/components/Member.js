@@ -24,7 +24,6 @@ function Member({ member }) {
             <br/>
             City: {member.City}
             <br/>
-            {/* Render other member details here */}
             <button onClick={handleEdit}>Edit</button>
             <button onClick={handleDelete}>Delete</button>
             <br/>        
