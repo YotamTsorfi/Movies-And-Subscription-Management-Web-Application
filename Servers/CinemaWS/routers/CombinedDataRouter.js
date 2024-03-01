@@ -2,12 +2,13 @@ const express = require('express');
 const usersFileBL = require('../BLL/usersFileBL');
 const userDBBL = require("../BLL/userBL");
 const permissionsFileBL = require('../BLL/permissionsFileBL');
+const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 //http://localhost:4824/combinedData
 router.route('/')
-    .get(async (req, resp) => {
+    .get(verifyToken, async (req, resp) => {
         
         const usersDBData = await userDBBL.getUsers();
         const usersFileData = await usersFileBL.getAllUsers();
@@ -32,7 +33,7 @@ router.route('/')
 
 
    router.route('/:id')
-    .get(async (req, resp) => {
+    .get(verifyToken, async (req, resp) => {
     const { id } = req.params;
 
     try {
@@ -64,7 +65,7 @@ router.route('/')
 
 
     router.route('/:id')
-    .delete(async (req, resp) => {
+    .delete(verifyToken, async (req, resp) => {
         const { id } = req.params;
 
         try {
@@ -87,10 +88,9 @@ router.route('/')
             resp.sendStatus(500);
         }
     });
-
-    //TODO: async? await?
+    
     router.route('/:id')
-    .put( (req, resp) => {
+    .put( verifyToken, (req, resp) => {
         const { id } = req.params;
         const userData = req.body;
     
@@ -140,7 +140,7 @@ router.route('/')
 
 
   router.route('/')
-  .post(async (req, resp) => {
+  .post(verifyToken, async (req, resp) => {
     const userData = req.body;
 
     let usersFileResult, permissionsResult, usersDBResult;
@@ -167,8 +167,7 @@ router.route('/')
 
       usersFileResult =  usersFileBL.addUser(dataWithoutUsername);
      
-      // Insert user's permissions
-      //console.log(userData.permissions);      
+      // Insert user's permissions           
       const permissionsArray = Object.keys(userData.permissions).filter(permission => userData.permissions[permission]);
       
       const formattedPermissions = {

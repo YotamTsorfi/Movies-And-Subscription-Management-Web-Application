@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function MoviesWatched({ memberId }) {
 
+    const token = useSelector(state => state.user.token);
     const [memberSubscriptions, setMemberSubscriptions] = useState([]);
     const [showSubscribe, setShowSubscribe] = useState(false);
     
@@ -13,12 +15,14 @@ function MoviesWatched({ memberId }) {
 
     const fetchSubscriptions = useCallback(async () => {
         try {
-          const response = await axios.get(`http://localhost:4321/subscriptions//${memberId}`);
+          const response = await axios.get(`http://localhost:4321/subscriptions//${memberId}`,{
+            headers: { 'x-access-token': token }          
+          });
           setMemberSubscriptions(response.data);
         } catch (error) {
           console.error(`Error fetching subscriptions for member with id ${memberId}`, error);
         }
-      }, [memberId]); // fetchSubscriptions is recreated only when memberId changes
+      }, [memberId, token]);
       
 
     useEffect(() => {
@@ -27,7 +31,9 @@ function MoviesWatched({ memberId }) {
 
     const fetchUnwatchedMovies = async () => {
         try {
-            const response = await axios.get(`http://localhost:4321/subscriptions/unwatched/${memberId}`);
+            const response = await axios.get(`http://localhost:4321/subscriptions/unwatched/${memberId}`,{
+                headers: { 'x-access-token': token }
+            });
             setUnwatchedMovies(response.data);
         } catch (error) {
             console.error(`Error fetching unwatched movies for member with id ${memberId}`, error);
@@ -44,11 +50,13 @@ function MoviesWatched({ memberId }) {
                 ? `http://localhost:4321/subscriptions/update/${memberId}`
                 : `http://localhost:4321/subscriptions/create`;
     
-            const response = await axios.post(url, {
-                memberId,
-                movieId: selectedMovie,
-                date: selectedDate
-            });
+                const response = await axios.post(url, {
+                    memberId,
+                    movieId: selectedMovie,
+                    date: selectedDate
+                }, {
+                    headers: { 'x-access-token': token }
+                });
     
             if (response.status === 200) {
                 fetchSubscriptions();

@@ -1,10 +1,11 @@
 const express = require('express');
 const permissionsFileBL = require('../BLL/permissionsFileBL');
 const router = express.Router();
+const verifyToken = require('../middleware/authMiddleware');
 
 //http://localhost:4824/permissionsfile
 router.route('/')
-    .get(async (req, resp) => {
+    .get(verifyToken, async (req, resp) => {
         const permissions = await permissionsFileBL.getAllPermissions();
         return resp.json(permissions);
     })
@@ -15,7 +16,7 @@ router.route('/')
     });
 
 //http://localhost:4824/permissionsfile/userHasPermission?userId=1&permission=deleteUsers
-router.get('/userHasPermission', async (req, res) => {
+router.get('/userHasPermission', verifyToken, async (req, res) => {
     try {
         const { userId, permission } = req.query;
         const hasPermission = await permissionsFileBL.userHasPermission(userId, permission);
@@ -32,13 +33,13 @@ router.route('/:id')
         const permission = await permissionsFileBL.getPermissionById(id);
         return resp.json(permission);
     })
-    .put(async (req, resp) => {
+    .put(verifyToken, async (req, resp) => {
         const id = req.params.id;
         const permission = req.body;
         await permissionsFileBL.updatePermission(id, permission);
         return resp.json(permission);
     })
-    .delete(async (req, resp) => {
+    .delete(verifyToken, async (req, resp) => {
         const id = req.params.id;
         await permissionsFileBL.deletePermission(id);
         return resp.sendStatus(204);

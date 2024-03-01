@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 
 function User({ user, refreshUsers }) {
+  const token = useSelector(state => state.user.token);
   const navigate = useNavigate();
   const [createdDate, setCreatedDate] = useState('N/A');
   const [permissions, setPermissions] = useState(['N/A']);
@@ -32,7 +34,9 @@ function User({ user, refreshUsers }) {
   const handleDelete = async () => {
     // Delete the user
     try {
-      const response = await axios.delete(`http://localhost:4824/combinedData/${user.Id}`);
+      const response = await axios.delete(`http://localhost:4824/combinedData/${user.Id}`, {
+        headers: { "x-access-token": token }
+      });
       if (response.status === 200) {
         console.log(`User ${user["User Name"]} deleted successfully`);
         // Refresh the users list

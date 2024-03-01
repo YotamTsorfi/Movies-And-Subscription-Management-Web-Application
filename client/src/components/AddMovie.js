@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMovie } from '../actions/moviesActions';
 
 function AddMovie({ resetMenuOption }) {
     const dispatch = useDispatch();
+    const token = useSelector(state => state.user.token);
     const [movie, setMovie] = useState({ Name: '', Genres: '', Image: '', Premiered: ''});
 
     const cancelAdd = () => {      
@@ -13,7 +14,7 @@ function AddMovie({ resetMenuOption }) {
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      dispatch(addMovie(movie));
+      dispatch(addMovie(movie, token));
       resetMenuOption();
     };
 

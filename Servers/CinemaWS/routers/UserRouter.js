@@ -1,16 +1,7 @@
 const userBL = require("../BLL/userBL");
 const express = require("express");
 const router = express.Router();
-
-//http://localhost:4824/users/
-// router.route("/").get(async function (req, res) {
-//   try {
-//     let users = await userBL.getUsers();
-//     res.json(users);
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
+const verifyToken = require('../middleware/authMiddleware');
 
 //http://localhost:4824/users/username
 router.route("/:username").get(async function (req, res) {
@@ -28,32 +19,8 @@ router.route("/:username").get(async function (req, res) {
   }
 });
     
-// router.route("/").post(async function (req, res) {
-//   try {
-//     let obj = req.body;
-//     let status = await userBL.createUser(obj);
-//     res.json(status);
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
 
-
-//TODO: Might not be the best idea to send the password.
-// router.route("/:username").put(async function (req, res) {
-//   try {
-//     let username = req.params.username;
-//     let obj = req.body;
-
-//     let updatedUser = await userBL.updateUser(username, obj);
-//     res.json(updatedUser);
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// });
-
-//TODO: might need to change the function to use the username instead of the id
-router.route("/:id").delete(async function (req, res) {
+router.route("/:id").delete(verifyToken, async function (req, res) {
   try {
     const id = req.params.id;
     const status = await userBL.deleteUser(id);
@@ -63,16 +30,6 @@ router.route("/:id").delete(async function (req, res) {
   }
 });
 
-//http://localhost:4824/users/register
-// router.post('/register', async (req, res) => {
-//   try {
-//       const { username, password } = req.body;
-//       await userBL.registerUser(username, password);
-//       res.status(201).send({ message: 'User registered successfully' });
-//   } catch (err) {
-//       res.status(500).send({ error: err.message });
-//   }
-// });
 
 //http://localhost:4824/users/register-existing
 router.post('/register-existing', async (req, res) => {
@@ -89,11 +46,6 @@ router.post('/register-existing', async (req, res) => {
     res.status(500).send({ error: err.message });
   }
 });
-
-
-
-
-
 
 
 

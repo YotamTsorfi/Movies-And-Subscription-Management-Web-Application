@@ -1,50 +1,38 @@
 // Users.js
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect, useCallback }  from 'react';
 import axios from 'axios';
 import { Box, Typography, Button } from '@mui/material';
 import User from './User';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../actions/userActions';
+import { useSelector } from 'react-redux';
 
 function Users() {  
-
+  const token = useSelector(state => state.user.token);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axios.get('http://localhost:4824/combinedData');
-        if (response.status === 200) {        
-          setUsers(response.data);
-        }
-      }
-      catch (error) {
-        console.error('Error getting users', error);
-      }
-    }
-
-    getUsers();
-  }, []);
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => { 
     try {
-      const response = await axios.get('http://localhost:4824/combinedData');
+      const response = await axios.get('http://localhost:4824/combinedData', {
+        headers: { "x-access-token": token }      
+      });
       if (response.status === 200) {        
         setUsers(response.data);
-     //   console.log(response.data);
       }
     }
     catch (error) {
       console.error('Error getting users', error);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+
 
   const handleLogout = () => {
     dispatch(logoutUser()); 

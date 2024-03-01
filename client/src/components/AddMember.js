@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMember } from '../actions/membersActions';
 
 function AddMember(props) {
+
+    const token = useSelector(state => state.user.token);
+
     const dispatch = useDispatch();
     const [member, setMember] = useState({
         Name: '',
@@ -18,7 +21,7 @@ function AddMember(props) {
     };
 
     const handleSave = () => {
-        dispatch(addMember(member));
+        dispatch(addMember(member, token));
         window.location.reload();
     };
 

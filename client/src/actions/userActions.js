@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const loginUser = (username, password) => {
 
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       const response = await axios.post('http://localhost:4824/auth/login', { username, password });    
 
@@ -13,7 +13,7 @@ export const loginUser = (username, password) => {
       const permissionsResponse = await axios.get(`http://localhost:4824/permissionsfile/${response.data.userId}`);
       const permissions = permissionsResponse.data.permissions;
 
-      dispatch({ type: 'USER_LOGIN_SUCCESS', payload: {token : response.data, userId: response.data.userId, username, isAdmin, permissions} });
+      dispatch({ type: 'USER_LOGIN_SUCCESS', payload: {token : response.data.token, userId: response.data.userId, username, isAdmin, permissions} });
       return true;
     } catch (error) {      
       dispatch({ type: 'USER_LOGIN_FAIL', payload: error.message });

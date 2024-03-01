@@ -1,7 +1,7 @@
 // AllMovies.js
 import React, { useEffect, useState} from 'react';
 import Movie from './Movie';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies, deleteMovie } from '../actions/moviesActions';
 import { fetchSubscriptions } from '../actions/subscriptionsActions';
@@ -9,6 +9,7 @@ import { fetchMembers } from '../actions/membersActions';
 
 function AllMovies() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const allMovies = useSelector(state => state.movies);
   const [searchTerm, setSearchTerm] = useState('');
   const [movies, setMovies] = useState([]);
@@ -17,12 +18,13 @@ function AllMovies() {
   const permissions = useSelector((state) => state.user.permissions);
   const allSubscriptions = useSelector(state => state.subscriptions);
   const allMembers = useSelector(state => state.members);
+  const token = useSelector(state => state.user.token);
 
   useEffect(() => {
-    dispatch(fetchMovies());
-    dispatch(fetchSubscriptions());
-    dispatch(fetchMembers());
-  }, [dispatch]);
+    dispatch(fetchMovies(token));
+    dispatch(fetchSubscriptions(token));
+    dispatch(fetchMembers(token));
+  }, [dispatch, token]);
 
   useEffect(() => {
     setMovies(allMovies);
@@ -43,7 +45,7 @@ function AllMovies() {
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteMovie(id));
+    dispatch(deleteMovie(id, token));
   };
 
   return (
@@ -51,7 +53,7 @@ function AllMovies() {
       <h3>All Movies</h3>
       Find Movie: <input type="text" name="search" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
       <button onClick={handleSearch}>Find</button>
-
+      {movieId && <button onClick={() => navigate('/main')}>Main</button>}
       {movies.map(movie => {
         const movieSubscriptions = allSubscriptions
           .filter(subscription => subscription.Movies.some(m => m.movieId === movie._id))

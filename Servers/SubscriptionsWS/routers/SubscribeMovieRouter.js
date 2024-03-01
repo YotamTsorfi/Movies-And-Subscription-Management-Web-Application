@@ -2,9 +2,10 @@ const express = require('express');
 const SubscriptionBLL = require('../BLL/SubscribeMovieBL')
 const MovieBLL = require('../BLL/movieBL')
 const router = express.Router();
+const verifyToken = require('../middleware/authMiddleware');
 
 
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
     try {
       const AllSubscriptions = await SubscriptionBLL.getSubscriptions();
       res.json(AllSubscriptions);
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
 
 
 // Get all subscriptions for a member
-router.get('/:memberId', async (req, res) => {
+router.get('/:memberId', verifyToken, async (req, res) => {
     try {
         const subscriptions = await SubscriptionBLL.getMemberSubscriptions(req.params.memberId);
         res.json(subscriptions);
@@ -25,7 +26,7 @@ router.get('/:memberId', async (req, res) => {
 });
 
 router.route('/create')
-    .post(async (req, res) => {
+    .post(verifyToken, async (req, res) => {
         const { memberId, movieId, date } = req.body;
         const newSubscription = {
             MemberId: memberId,
@@ -36,7 +37,7 @@ router.route('/create')
     });
 
 router.route('/update/:memberId')
-    .post(async (req, res) => {
+    .post(verifyToken, async (req, res) => {
         const { memberId } = req.params;
         const { movieId, date } = req.body;
         const updatedSubscription = {
@@ -48,7 +49,7 @@ router.route('/update/:memberId')
 
 
 // Delete a subscription for a member
-router.delete('/:memberId', async (req, res) => {
+router.delete('/:memberId', verifyToken, async (req, res) => {
     try {
         const deletedSubscription = await SubscriptionBLL.deleteSubscription(req.params.memberId);
         res.json(deletedSubscription);
@@ -58,7 +59,7 @@ router.delete('/:memberId', async (req, res) => {
 });
 
 // Get all movies that a member has not watched
-router.get('/unwatched/:memberId', async (req, res) => {
+router.get('/unwatched/:memberId', verifyToken, async (req, res) => {
     try {
         const memberSubscriptions = await SubscriptionBLL.getMemberSubscriptions(req.params.memberId);
         let watchedMovieIds = [];
@@ -75,7 +76,7 @@ router.get('/unwatched/:memberId', async (req, res) => {
 
 
 router.route('/movie/:movieId')
-    .get(async (req, res) => {
+    .get(verifyToken, async (req, res) => {
         const { movieId } = req.params;
 
         try {
@@ -88,7 +89,7 @@ router.route('/movie/:movieId')
     });
 
 
-    router.delete('/deleteByMemberId/:memberId', async (req, res) => {
+    router.delete('/deleteByMemberId/:memberId',verifyToken, async (req, res) => {
         try {
             const result = await SubscriptionBLL.deleteSubscriptionByMemberId(req.params.memberId);
             res.json(result);
@@ -97,7 +98,7 @@ router.route('/movie/:movieId')
         }
     });
 
-    router.delete('/deleteMovie/:movieId', async (req, res) => {
+    router.delete('/deleteMovie/:movieId', verifyToken, async (req, res) => {
         try {
             const result = await SubscriptionBLL.deleteMovieFromSubscriptions(req.params.movieId);
             res.json(result);

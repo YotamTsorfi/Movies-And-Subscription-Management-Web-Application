@@ -8,6 +8,8 @@ function EditMember() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const members = useSelector(state => state.members);
+    const token = useSelector(state => state.user.token);
+
     const [member, setMember] = useState({
         Name: '',
         Email: '',
@@ -29,7 +31,7 @@ function EditMember() {
     };
 
     const handleUpdate = () => {
-      dispatch(editMember(member));
+      dispatch(editMember(member, token));
       navigate('/subscriptions');
   };
 

@@ -6,10 +6,11 @@ import Member from './Member';
 function AllMembers() {    
     const dispatch = useDispatch();
     const members = useSelector(state => state.members);
+    const token = useSelector(state => state.user.token);
 
     useEffect(() => {
-        dispatch(fetchMembers());
-      }, [dispatch]);
+        dispatch(fetchMembers(token));
+      },  [dispatch, token]);
 
     return (
         <div style={{ border: '3px solid black', marginBottom: '20px' , width:'800px'}}>

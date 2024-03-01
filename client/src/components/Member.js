@@ -1,19 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteMember } from '../actions/membersActions';
 import MoviesWatched from './MoviesWatched';
 
 function Member({ member }) {    
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const token = useSelector(state => state.user.token);
    
     const handleEdit = () => {
         navigate(`/edit-member/${member._id}`);
     };
 
     const handleDelete = () => {
-        dispatch(deleteMember(member._id));        
+        dispatch(deleteMember(member._id, token));        
         window.location.reload();
       };
 

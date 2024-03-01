@@ -1,8 +1,9 @@
 const movieBL = require("../BLL/movieBL");
 const express = require("express");
 const router = express.Router();
+const verifyToken = require('../middleware/authMiddleware');
 
-router.route("/").get(async function (req, res) {
+router.route("/").get(verifyToken, async function (req, res) {
   try {
     let movies = await movieBL.getMovies();
     res.json(movies);
@@ -11,7 +12,7 @@ router.route("/").get(async function (req, res) {
   }
 });
 
-router.route("/:id").get(async function (req, res) {
+router.route("/:id").get(verifyToken, async function (req, res) {
   try {
     let id = req.params.id;
     let movie = await movieBL.getMovieById(id);
@@ -21,7 +22,7 @@ router.route("/:id").get(async function (req, res) {
   }
 });
 
-router.route("/").post(async function (req, res) {
+router.route("/").post(verifyToken, async function (req, res) {
   try {
     let obj = req.body;
     let newMovie = await movieBL.createMovie(obj);
@@ -31,7 +32,7 @@ router.route("/").post(async function (req, res) {
   }
 });
 
-router.route("/:id").put(async function (req, res) {
+router.route("/:id").put(verifyToken, async function (req, res) {
   try {
     let id = req.params.id;
     let obj = req.body;
@@ -43,7 +44,7 @@ router.route("/:id").put(async function (req, res) {
   }
 });
 
-router.route("/:id").delete(async function (req, res) {
+router.route("/:id").delete(verifyToken, async function (req, res) {
   try {
     let id = req.params.id;
     let status = await movieBL.deleteMovie(id);

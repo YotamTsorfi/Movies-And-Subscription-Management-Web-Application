@@ -1,8 +1,9 @@
 const memberBL = require("../BLL/memberBL");
 const express = require("express");
 const router = express.Router();
+const verifyToken = require('../middleware/authMiddleware');
 
-router.route("/").get(async function (req, res) {
+router.route("/").get(verifyToken, async function (req, res) {
   try {
     let members = await memberBL.getMembers();
     res.json(members);
@@ -11,7 +12,7 @@ router.route("/").get(async function (req, res) {
   }
 });
 
-router.route("/:id").get(async function (req, res) {
+router.route("/:id").get(verifyToken, async function (req, res) {
   try {
     let id = req.params.id;
     let member = await memberBL.getMemberById(id);
@@ -21,7 +22,7 @@ router.route("/:id").get(async function (req, res) {
   }
 });
 
-router.route("/").post(async function (req, res) {
+router.route("/").post(verifyToken, async function (req, res) {
   try {
     let obj = req.body;
     let newMember = await memberBL.createMember(obj);
@@ -31,7 +32,7 @@ router.route("/").post(async function (req, res) {
   }
 });
 
-router.route("/:id").put(async function (req, res) {
+router.route("/:id").put(verifyToken, async function (req, res) {
   try {
     let id = req.params.id;
     let obj = req.body;
@@ -43,7 +44,7 @@ router.route("/:id").put(async function (req, res) {
   }
 });
 
-router.route("/:id").delete(async function (req, res) {
+router.route("/:id").delete(verifyToken, async function (req, res) {
   try {
     let id = req.params.id;
     let status = await memberBL.deleteMember(id);

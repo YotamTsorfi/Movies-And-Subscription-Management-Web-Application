@@ -11,6 +11,7 @@ function EditMovie() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const allMovies = useSelector(state => state.movies);
+  const token = useSelector(state => state.user.token);
   const [movie, setMovie] = useState(null);
   
   useEffect(() => {
@@ -38,7 +39,7 @@ function EditMovie() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await dispatch(updateMovie(movie));
+      await dispatch(updateMovie(movie, token));
       navigate('/movies');  
     } catch (error) {
       console.error('Failed to update movie:', error);

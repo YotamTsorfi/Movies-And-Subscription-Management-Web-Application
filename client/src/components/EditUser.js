@@ -8,6 +8,7 @@ import { updateUserPermissions } from '../actions/userActions';
 function EditUser() {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.userId);
+  const token = useSelector(state => state.user.token);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -37,7 +38,9 @@ function EditUser() {
   useEffect(() => {
     // Fetch the user data when the component mounts
     const fetchUser = async () => {
-      const response = await axios.get(`http://localhost:4824/combinedData/${id}`);
+      const response = await axios.get(`http://localhost:4824/combinedData/${id}`, {
+        headers: { "x-access-token": token },  
+      });
       const userData = response.data;
       setUser(userData);
 
@@ -53,7 +56,7 @@ function EditUser() {
     };
 
     fetchUser();
-  }, [id]);
+  }, [id, token]);
 
   const handleInputChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
@@ -81,7 +84,9 @@ function EditUser() {
   const handleUpdate = async () => {
     // Update the user
     try {
-      const response = await axios.put(`http://localhost:4824/combinedData/${user.Id}`, { ...user, Permissions: permissions });
+      const response = await axios.put(`http://localhost:4824/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
+        headers: { "x-access-token": token }
+      });
       if (response.status === 200) {
         console.log(`User ${user["User Name"]} updated successfully`);     
         

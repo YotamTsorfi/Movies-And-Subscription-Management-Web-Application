@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Checkbox, FormControlLabel, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const permissionsList = [
   'View Subscriptions',
@@ -15,6 +16,8 @@ const permissionsList = [
 ];
 
 function AddUser() {
+  
+  const token = useSelector(state => state.user.token);
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
@@ -59,7 +62,9 @@ function AddUser() {
       };
   
       // Make a POST request to the server to save the user data
-      const response = await axios.post('http://localhost:4824/combinedData', userToSave);
+      const response = await axios.post('http://localhost:4824/combinedData', userToSave, {
+        headers: { "x-access-token": token },  
+      });
   
       if (response.status === 200) {
         console.log(`User ${user.userName} saved successfully`);
