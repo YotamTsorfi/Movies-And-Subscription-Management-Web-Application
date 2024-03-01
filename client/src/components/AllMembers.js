@@ -9,9 +9,10 @@ function AllMembers() {
     const token = useSelector(state => state.user.token);
 
     useEffect(() => {
-        dispatch(fetchMembers(token));
-      },  [dispatch, token]);
-
+        if (token) {
+            dispatch(fetchMembers(token));
+        }
+    }, [dispatch, token]);
     return (
         <div style={{ border: '3px solid black', marginBottom: '20px' , width:'800px'}}>
             <h3>All Members</h3>

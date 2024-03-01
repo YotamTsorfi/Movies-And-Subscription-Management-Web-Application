@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -22,13 +20,6 @@ import EditMember from './components/EditMember';
 import AddMember from './components/AddMember';
 
 function App() {
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch({ type: 'USER_LOGOUT' }); 
-  }, [dispatch]);
-
 
   return (
     <Router>

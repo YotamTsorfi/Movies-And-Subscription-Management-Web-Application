@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AllMembers from './AllMembers';
 import AddMember from './AddMember';
 import { useNavigate } from 'react-router-dom';
@@ -9,10 +9,11 @@ function Subscriptions() {
     const navigate = useNavigate();
     const token = useSelector((state) => state.user.token);
 
-    if (!token) {
-        navigate('/login');
-        return null;
-    }
+    useEffect(() => {
+        if (!token) {
+            navigate('/login');
+        }
+    }, [token, navigate]);
 
     const handleMenuChange = (option) => {
         setMenuOption(option);

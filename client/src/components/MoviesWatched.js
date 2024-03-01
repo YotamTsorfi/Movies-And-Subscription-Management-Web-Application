@@ -15,7 +15,7 @@ function MoviesWatched({ memberId }) {
 
     const fetchSubscriptions = useCallback(async () => {
         try {
-          const response = await axios.get(`http://localhost:4321/subscriptions//${memberId}`,{
+          const response = await axios.get(`http://localhost:4321/subscriptions/${memberId}`,{
             headers: { 'x-access-token': token }          
           });
           setMemberSubscriptions(response.data);
