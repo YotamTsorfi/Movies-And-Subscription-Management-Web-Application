@@ -14,6 +14,7 @@ function AllMovies() {
   const [searchTerm, setSearchTerm] = useState('');
   const [movies, setMovies] = useState([]);
   const { movieId } = useParams(); 
+  const [isLoading, setIsLoading] = useState(true);
 
   const permissions = useSelector((state) => state.user.permissions);
   const allSubscriptions = useSelector(state => state.subscriptions);
@@ -22,12 +23,14 @@ function AllMovies() {
 
   useEffect(() => {
     dispatch(fetchMovies(token));
+    setIsLoading(true);
     dispatch(fetchSubscriptions(token));
     dispatch(fetchMembers(token));
   }, [dispatch, token]);
 
   useEffect(() => {
     setMovies(allMovies);
+    setIsLoading(false);
   }, [allMovies]);
 
   useEffect(() => {
@@ -47,6 +50,10 @@ function AllMovies() {
   const handleDelete = (id) => {
     dispatch(deleteMovie(id, token));
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div style={{ border: '3px solid black', marginBottom: '20px' , width:'800px'}}>
