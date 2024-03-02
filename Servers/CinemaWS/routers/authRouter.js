@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const userBL = require('../BLL/userBL'); 
+const usersFileBL = require('../BLL/usersFileBL');
 
 const router = express.Router();
 
@@ -23,9 +24,14 @@ router.post('/login', async (req, res) => {
         //Gettting ipAddress as a private key
         const RSA_PRIVATE_KEY = req.socket.remoteAddress;
         const token = jwt.sign({ 
-            username: user.username }, 
+            username: user.username,
+            userId: userObject._id.toString() }, 
             RSA_PRIVATE_KEY,
             { expiresIn: '1h' });
+
+
+        const sessionTimeOut = 60; // 1 hour in minutes
+        await usersFileBL.updateUserProperty(userObject._id, 'sessionTimeOut', sessionTimeOut);  
 
         res.json({ token: token, userId: userObject._id});
     } else {

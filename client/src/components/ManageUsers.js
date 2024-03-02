@@ -35,7 +35,7 @@ function ManageUsers() {
       </List>
 
       <Button variant="contained" color="primary" onClick={() => navigate('/main')}>Main</Button>
-      <Button variant="contained" color="primary" onClick={handleLogout}>
+      <Button variant="outlined" color="primary" onClick={handleLogout}>
         Logout
       </Button>
     </div>

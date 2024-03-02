@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const usersFileBL = require('../BLL/usersFileBL');
 
 function verifyToken(req, res, next) {
   const token = req.headers['x-access-token'];
@@ -13,7 +14,13 @@ function verifyToken(req, res, next) {
       return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
     }
     
-    req.userId = decoded.id;
+    req.userId = decoded.userId.toString();
+
+    const currentTime = Math.floor(Date.now() / 1000); // current time in seconds
+    const sessionTimeOut = Math.floor((decoded.exp - currentTime) / 60); //minutes
+
+    usersFileBL.updateUserProperty(req.userId, 'sessionTimeOut', sessionTimeOut);
+
     next();
   });
 }

@@ -105,7 +105,7 @@ const updateUserProperty = (id, property, newValue) => {
                 reject(err);
                 return;
             }
-            const user = data.find(u => u.id === id);
+            const user = data.find(u => u.id === id.toString());
             if (!user) {
                 reject(`User with id ${id} not found!`);
                 return;
