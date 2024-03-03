@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 function MoviesWatched({ memberId }) {
 
     const token = useSelector(state => state.user.token);
+    const permissions = useSelector((state) => state.user.permissions);
     const [memberSubscriptions, setMemberSubscriptions] = useState([]);
     const [showSubscribe, setShowSubscribe] = useState(false);
     
@@ -70,14 +71,20 @@ function MoviesWatched({ memberId }) {
     };
 
 
+    const handleSubscribeButton = () => {
+        if (!permissions.includes('Create Subscriptions')) {
+            alert('You do not have permission to subscribe to movies.');
+        } else {
+            setShowSubscribe(!showSubscribe);
+            if (!showSubscribe) fetchUnwatchedMovies();
+        }
+    };
+
     return (
         <div style={{ border: '3px solid black', marginBottom: '20px' , width:'300px'}}>
             Movies Watched 
             <br/>   
-            <button onClick={() => {
-                setShowSubscribe(!showSubscribe);
-                if (!showSubscribe) fetchUnwatchedMovies();
-            }}>
+            <button onClick={handleSubscribeButton}>
                 Subscribe to new movie
             </button>
             {showSubscribe && (

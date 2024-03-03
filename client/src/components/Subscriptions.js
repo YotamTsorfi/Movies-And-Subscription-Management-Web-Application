@@ -8,6 +8,7 @@ function Subscriptions() {
     const [menuOption, setMenuOption] = useState('All Members');
     const navigate = useNavigate();
     const token = useSelector((state) => state.user.token);
+    const permissions = useSelector((state) => state.user.permissions);
 
     useEffect(() => {
         if (!token) {
@@ -31,7 +32,16 @@ function Subscriptions() {
             <button onClick={() => navigate('/main')}>Main</button>
             <br/><br/>
             {menuOption === 'All Members' && <AllMembers />}
-            {menuOption === 'Add Member' && <AddMember resetMenuOption={resetMenuOption} />}
+            {menuOption === 'Add Member' && (
+                permissions.includes('Create Subscriptions') ? (
+                    <AddMember resetMenuOption={resetMenuOption} />
+                ) : (
+                    <>
+                        {alert('You do not have permission to Create a member.')}
+                        {handleMenuChange('All Members')}
+                    </>
+                )
+            )}
         </div>
     );
 }

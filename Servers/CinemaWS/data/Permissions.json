@@ -1,2 +1,1 @@
-[{"userId":"65e2f0cc47d111b3c89f9692","permissions":["View Subscriptions","Create Subscriptions","Delete Subscriptions","Update Subscriptions","View Movies","Create Movies","Delete Movies","Update Movies"]},
-{"userId":"65e2f0fd47d111b3c89fad6d","permissions":["Create Subscriptions","Delete Subscriptions","Update Subscriptions","View Movies"]}]
+[{"userId":"65e2f0cc47d111b3c89f9692","permissions":["View Subscriptions","Create Subscriptions","Delete Subscriptions","Update Subscriptions","View Movies","Create Movies","Delete Movies","Update Movies"]},{"userId":"65e2f0fd47d111b3c89fad6d","permissions":["View Subscriptions","View Movies"]}]

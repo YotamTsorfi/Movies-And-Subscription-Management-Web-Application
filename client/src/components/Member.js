@@ -8,9 +8,14 @@ function Member({ member }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const token = useSelector(state => state.user.token);
+    const permissions = useSelector((state) => state.user.permissions);
    
     const handleEdit = () => {
-        navigate(`/edit-member/${member._id}`);
+        if (permissions.includes('Update Subscriptions')) {
+            navigate(`/edit-member/${member._id}`);
+        }  else {
+            alert('You do not have permission to edit a member.');
+          }
     };
 
     const handleDelete = () => {

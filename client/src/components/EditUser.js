@@ -126,7 +126,7 @@ function EditUser() {
         <br />
         <FormControlLabel control={<Checkbox name="Delete Subscriptions" checked={permissions['Delete Subscriptions']} onChange={handleCheckboxChange} />} label="Delete Subscriptions" />
         <br />
-        <FormControlLabel control={<Checkbox name="Update Subscriptions" checked={permissions['Update Subscriptions']} onChange={handleCheckboxChange} />} label="Update Subscription" />
+        <FormControlLabel control={<Checkbox name="Update Subscriptions" checked={permissions['Update Subscriptions']} onChange={handleCheckboxChange} />} label="Update Subscriptions" />
         <br />
         <FormControlLabel control={<Checkbox name="View Movies" checked={permissions['View Movies']} onChange={handleCheckboxChange} />} label="View Movies" />
         <br />
