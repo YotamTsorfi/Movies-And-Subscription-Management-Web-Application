@@ -10,7 +10,11 @@ function verifyToken(req, res, next) {
   
   jwt.verify(token, RSA_PRIVATE_KEY, (err, decoded) => {
     if (err) {
-      return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).send({ auth: false, message: 'Token expired.' });
+      } else {
+        return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+      }
     }
     
     req.userId = decoded.id;

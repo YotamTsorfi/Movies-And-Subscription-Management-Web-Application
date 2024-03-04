@@ -25,8 +25,9 @@ function Users() {
     }
     catch (error) {
       console.error('Error getting users', error);
+      navigate("/login");
     }
-  }, [token]);
+  }, [token, navigate]);
 
   useEffect(() => {
     fetchUsers();

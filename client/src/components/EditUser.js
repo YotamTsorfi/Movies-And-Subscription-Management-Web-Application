@@ -98,7 +98,10 @@ function EditUser() {
         navigate('/users');
       }
     } catch (error) {
-      console.error(`Error updating user ${user["User Name"]}`, error);
+      if (error.response) {
+        console.error(`Error updating user ${user["User Name"]}`, error);
+        navigate("/login");
+      }
     }
   };
 

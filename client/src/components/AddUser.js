@@ -72,7 +72,10 @@ function AddUser() {
         navigate('/users');
       }
     } catch (error) {
-      console.error(`Error saving user ${user.userName}`, error);
+      if (error.response) {
+        console.error(`Error saving user ${user.userName}`, error);
+        navigate("/login");
+      }
     }
   };
 

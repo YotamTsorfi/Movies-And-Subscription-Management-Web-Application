@@ -44,6 +44,7 @@ function User({ user, refreshUsers }) {
       }
     } catch (error) {
       console.error(`Error deleting user ${user["User Name"]}`, error);
+      navigate("/login");
     }
   };
 

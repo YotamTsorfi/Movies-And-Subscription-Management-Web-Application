@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 function MoviesWatched({ memberId }) {
 
@@ -13,6 +14,7 @@ function MoviesWatched({ memberId }) {
     const [unwatchedMovies, setUnwatchedMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
+    const navigate = useNavigate();
 
     const fetchSubscriptions = useCallback(async () => {
         try {
@@ -22,8 +24,9 @@ function MoviesWatched({ memberId }) {
           setMemberSubscriptions(response.data);
         } catch (error) {
           console.error(`Error fetching subscriptions for member with id ${memberId}`, error);
+          navigate("/login");
         }
-      }, [memberId, token]);
+      }, [memberId, token, navigate]);
       
 
     useEffect(() => {
@@ -38,6 +41,7 @@ function MoviesWatched({ memberId }) {
             setUnwatchedMovies(response.data);
         } catch (error) {
             console.error(`Error fetching unwatched movies for member with id ${memberId}`, error);
+            navigate("/login");
         }
     };
 
@@ -64,9 +68,11 @@ function MoviesWatched({ memberId }) {
             } else {
                 // Handle error
                 console.error('Error subscribing to movie', response);
+                navigate("/login");
             }
         } catch (error) {
             console.error('Error subscribing to movie', error);
+            navigate("/login");
         }
     };
 
