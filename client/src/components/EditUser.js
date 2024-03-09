@@ -3,7 +3,7 @@ import { Box, Button, TextField, Checkbox, FormControlLabel } from '@mui/materia
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserPermissions } from '../actions/userActions';
+import { updateUserPermissions, logoutUser } from '../actions/userActions';
 
 function EditUser() {
   const dispatch = useDispatch();
@@ -38,7 +38,8 @@ function EditUser() {
   useEffect(() => {
     // Fetch the user data when the component mounts
     const fetchUser = async () => {
-      const response = await axios.get(`http://localhost:4824/combinedData/${id}`, {
+      //const response = await axios.get(`http://localhost:4824/combinedData/${id}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/combinedData/${id}`, {
         headers: { "x-access-token": token },  
       });
       const userData = response.data;
@@ -84,7 +85,8 @@ function EditUser() {
   const handleUpdate = async () => {
     // Update the user
     try {
-      const response = await axios.put(`http://localhost:4824/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
+      //const response = await axios.put(`http://localhost:4824/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
         headers: { "x-access-token": token }
       });
       if (response.status === 200) {
@@ -100,6 +102,7 @@ function EditUser() {
     } catch (error) {
       if (error.response) {
         console.error(`Error updating user ${user["User Name"]}`, error);
+        dispatch(logoutUser);
         navigate("/login");
       }
     }

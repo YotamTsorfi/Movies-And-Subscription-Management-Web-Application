@@ -16,7 +16,8 @@ function Users() {
 
   const fetchUsers = useCallback(async () => { 
     try {
-      const response = await axios.get('http://localhost:4824/combinedData', {
+      //const response = await axios.get('http://localhost:4824/combinedData', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/combinedData`, {
         headers: { "x-access-token": token }      
       });
       if (response.status === 200) {        
@@ -25,9 +26,10 @@ function Users() {
     }
     catch (error) {
       console.error('Error getting users', error);
+      dispatch(logoutUser);
       navigate("/login");
     }
-  }, [token, navigate]);
+  }, [token, navigate, dispatch]);
 
   useEffect(() => {
     fetchUsers();

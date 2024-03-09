@@ -3,6 +3,8 @@ import { TextField, Checkbox, FormControlLabel, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { logoutUser } from '../actions/userActions';
+import { useDispatch } from 'react-redux';
 
 const permissionsList = [
   'View Subscriptions',
@@ -16,7 +18,7 @@ const permissionsList = [
 ];
 
 function AddUser() {
-  
+  const dispatch = useDispatch();
   const token = useSelector(state => state.user.token);
   const [user, setUser] = useState({
     firstName: '',
@@ -62,7 +64,8 @@ function AddUser() {
       };
   
       // Make a POST request to the server to save the user data
-      const response = await axios.post('http://localhost:4824/combinedData', userToSave, {
+      //const response = await axios.post('http://localhost:4824/combinedData', userToSave, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/combinedData`, userToSave, {
         headers: { "x-access-token": token },  
       });
   
@@ -74,6 +77,7 @@ function AddUser() {
     } catch (error) {
       if (error.response) {
         console.error(`Error saving user ${user.userName}`, error);
+        dispatch(logoutUser);
         navigate("/login");
       }
     }

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { logoutUser } from '../actions/userActions';
+import { useDispatch } from 'react-redux';
 
 function MoviesWatched({ memberId }) {
 
+    const dispatch = useDispatch();
     const token = useSelector(state => state.user.token);
     const permissions = useSelector((state) => state.user.permissions);
     const [memberSubscriptions, setMemberSubscriptions] = useState([]);
@@ -18,15 +20,17 @@ function MoviesWatched({ memberId }) {
 
     const fetchSubscriptions = useCallback(async () => {
         try {
-          const response = await axios.get(`http://localhost:4321/subscriptions/${memberId}`,{
+          //const response = await axios.get(`http://localhost:4321/subscriptions/${memberId}`,{
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/subscriptions/${memberId}`,{
             headers: { 'x-access-token': token }          
           });
           setMemberSubscriptions(response.data);
         } catch (error) {
           console.error(`Error fetching subscriptions for member with id ${memberId}`, error);
+          dispatch(logoutUser);
           navigate("/login");
         }
-      }, [memberId, token, navigate]);
+      }, [memberId, token, navigate, dispatch]);
       
 
     useEffect(() => {
@@ -35,12 +39,14 @@ function MoviesWatched({ memberId }) {
 
     const fetchUnwatchedMovies = async () => {
         try {
-            const response = await axios.get(`http://localhost:4321/subscriptions/unwatched/${memberId}`,{
+            //const response = await axios.get(`http://localhost:4321/subscriptions/unwatched/${memberId}`,{
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/subscriptions/unwatched/${memberId}`,{
                 headers: { 'x-access-token': token }
             });
             setUnwatchedMovies(response.data);
         } catch (error) {
             console.error(`Error fetching unwatched movies for member with id ${memberId}`, error);
+            dispatch(logoutUser);
             navigate("/login");
         }
     };
@@ -52,8 +58,10 @@ function MoviesWatched({ memberId }) {
                 return;
             }
             const url = memberSubscriptions.length > 0
-                ? `http://localhost:4321/subscriptions/update/${memberId}`
-                : `http://localhost:4321/subscriptions/create`;
+                // ? `http://localhost:4321/subscriptions/update/${memberId}`
+                // : `http://localhost:4321/subscriptions/create`;
+                ? `${process.env.REACT_APP_API_URL}/subscriptions/update/${memberId}`
+                : `${process.env.REACT_APP_API_URL}/subscriptions/create`;
     
                 const response = await axios.post(url, {
                     memberId,
@@ -68,10 +76,12 @@ function MoviesWatched({ memberId }) {
             } else {
                 // Handle error
                 console.error('Error subscribing to movie', response);
+                dispatch(logoutUser);
                 navigate("/login");
             }
         } catch (error) {
             console.error('Error subscribing to movie', error);
+            dispatch(logoutUser);
             navigate("/login");
         }
     };

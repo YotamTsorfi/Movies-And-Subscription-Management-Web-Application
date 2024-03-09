@@ -4,9 +4,11 @@ import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-
+import { logoutUser } from '../actions/userActions';
+import { useDispatch } from 'react-redux';
 
 function User({ user, refreshUsers }) {
+  const dispatch = useDispatch();
   const token = useSelector(state => state.user.token);
   const navigate = useNavigate();
   const [createdDate, setCreatedDate] = useState('N/A');
@@ -34,7 +36,8 @@ function User({ user, refreshUsers }) {
   const handleDelete = async () => {
     // Delete the user
     try {
-      const response = await axios.delete(`http://localhost:4824/combinedData/${user.Id}`, {
+      //const response = await axios.delete(`http://localhost:4824/combinedData/${user.Id}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/combinedData/${user.Id}`, {
         headers: { "x-access-token": token }
       });
       if (response.status === 200) {
@@ -44,6 +47,7 @@ function User({ user, refreshUsers }) {
       }
     } catch (error) {
       console.error(`Error deleting user ${user["User Name"]}`, error);
+      dispatch(logoutUser);
       navigate("/login");
     }
   };

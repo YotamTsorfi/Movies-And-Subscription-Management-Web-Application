@@ -15,6 +15,9 @@ import {thunk} from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react';
+import dotenv from 'react-dotenv';
+
+dotenv.config();
 
 // Combine multiple reducers into a single root reducer
 const rootReducer = combineReducers({
