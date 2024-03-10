@@ -1,6 +1,6 @@
 const path = require('path');
 const jsonfile = require('jsonfile');
-const file = path.join(__dirname, '..', 'data', 'users.json');
+const file = path.join(__dirname, '..', 'data', 'Users.json');
 
 const getAllUsers = () => {
     return new Promise((resolve, reject) => {
