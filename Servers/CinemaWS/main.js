@@ -57,8 +57,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
-app.listen(port, () => {
-    console.log(`App is listening at http://localhost:${port}`);
-  });
- 
+app.listen(port, '0.0.0.0', () => {
+  console.log(`App is listening at http://localhost:${port}`);
+});
   
