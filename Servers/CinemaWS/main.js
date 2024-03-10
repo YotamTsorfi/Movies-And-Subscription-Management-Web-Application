@@ -51,6 +51,11 @@ app.use("/auth", authRouter);
 app.use("/combinedData", combinedDataRouter);
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static('build'));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
 
 app.listen(port, () => {
     console.log(`App is listening at http://localhost:${port}`);
