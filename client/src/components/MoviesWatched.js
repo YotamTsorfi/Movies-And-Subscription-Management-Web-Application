@@ -21,7 +21,7 @@ function MoviesWatched({ memberId }) {
     const fetchSubscriptions = useCallback(async () => {
         try {
           //const response = await axios.get(`http://localhost:4321/subscriptions/${memberId}`,{
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/subscriptions/${memberId}`,{
+          const response = await axios.get(`${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/${memberId}`,{
             headers: { 'x-access-token': token }          
           });
           setMemberSubscriptions(response.data);
@@ -40,7 +40,7 @@ function MoviesWatched({ memberId }) {
     const fetchUnwatchedMovies = async () => {
         try {
             //const response = await axios.get(`http://localhost:4321/subscriptions/unwatched/${memberId}`,{
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/subscriptions/unwatched/${memberId}`,{
+            const response = await axios.get(`${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/unwatched/${memberId}`,{
                 headers: { 'x-access-token': token }
             });
             setUnwatchedMovies(response.data);
@@ -60,8 +60,8 @@ function MoviesWatched({ memberId }) {
             const url = memberSubscriptions.length > 0
                 // ? `http://localhost:4321/subscriptions/update/${memberId}`
                 // : `http://localhost:4321/subscriptions/create`;
-                ? `${process.env.REACT_APP_API_URL}/subscriptions/update/${memberId}`
-                : `${process.env.REACT_APP_API_URL}/subscriptions/create`;
+                ? `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/update/${memberId}`
+                : `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/create`;
     
                 const response = await axios.post(url, {
                     memberId,

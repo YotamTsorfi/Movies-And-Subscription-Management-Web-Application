@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 export const fetchMembers = (token) => async (dispatch) => {
   try {
     //const response = await axios.get("http://localhost:4321/members/", {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/members/`, {
+    const response = await axios.get(`${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/members/`, {
       headers: { "x-access-token": token },
     });
     dispatch({ type: "FETCH_MEMBERS", payload: response.data });
@@ -22,7 +22,7 @@ export const addMember = (member, token) => async (dispatch) => {
   try {
     const response = await axios.post(
      // "http://localhost:4321/members/",
-     `${process.env.REACT_APP_API_URL}/members`,
+     `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/members`,
       member,
       {
         headers: { "x-access-token": token },
@@ -41,7 +41,7 @@ export const editMember = (member, token) => async (dispatch) => {
   try {
     const response = await axios.put(
       //`http://localhost:4321/members/${member._id}`,
-      `${process.env.REACT_APP_API_URL}/members/${member._id}`,
+      `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/members/${member._id}`,
       member,
       {
         headers: { "x-access-token": token },
@@ -59,12 +59,12 @@ export const editMember = (member, token) => async (dispatch) => {
 export const deleteMember = (id, token) => async (dispatch) => {
   try {
     //await axios.delete(`http://localhost:4321/members/${id}`, {
-    await axios.delete(`${process.env.REACT_APP_API_URL}/members/${id}`, {
+    await axios.delete(`${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/members/${id}`, {
       headers: { "x-access-token": token },
     });
     await axios.delete(
       //`http://localhost:4321/subscriptions/deleteByMemberId/${id}`,
-      `${process.env.REACT_APP_API_URL}/subscriptions/deleteByMemberId/${id}`,
+      `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/deleteByMemberId/${id}`,
       {
         headers: { "x-access-token": token },
       }

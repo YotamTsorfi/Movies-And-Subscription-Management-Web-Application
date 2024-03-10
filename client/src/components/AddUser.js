@@ -65,7 +65,7 @@ function AddUser() {
   
       // Make a POST request to the server to save the user data
       //const response = await axios.post('http://localhost:4824/combinedData', userToSave, {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/combinedData`, userToSave, {
+      const response = await axios.post(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData`, userToSave, {
         headers: { "x-access-token": token },  
       });
   

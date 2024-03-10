@@ -37,7 +37,7 @@ function User({ user, refreshUsers }) {
     // Delete the user
     try {
       //const response = await axios.delete(`http://localhost:4824/combinedData/${user.Id}`, {
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/combinedData/${user.Id}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData/${user.Id}`, {
         headers: { "x-access-token": token }
       });
       if (response.status === 200) {
