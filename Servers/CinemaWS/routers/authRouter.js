@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     // Get the user from the database
     const user = await userBL.getUserByUsername(username);
 
@@ -21,12 +21,12 @@ router.post('/login', async (req, res) => {
 
     if (await userBL.validatePassword(userObject, password)) {
       
-      //Gettting ipAddress as a private key        
-        const RSA_PRIVATE_KEY = process.env.JWT_SECRET_KEY;
+        //Gettting ipAddress as a private key
+        const RSA_PRIVATE_KEY = req.socket.remoteAddress;
         const token = jwt.sign({ 
             username: user.username,
             userId: userObject._id.toString() }, 
-             RSA_PRIVATE_KEY,
+            RSA_PRIVATE_KEY,
             { expiresIn: '1h' });
 
 
