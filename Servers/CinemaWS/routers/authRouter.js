@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const userBL = require('../BLL/userBL'); 
 const usersFileBL = require('../BLL/usersFileBL');
+const RSA_PRIVATE_KEY = process.env.JWT_SECRET_KEY;
 
 const router = express.Router();
 
@@ -21,12 +22,11 @@ router.post('/login', async (req, res) => {
 
     if (await userBL.validatePassword(userObject, password)) {
       
-        //Gettting ipAddress as a private key
-        //const RSA_PRIVATE_KEY = process.env.JWT_SECRET_KEY;
+        //Gettting ipAddress as a private key        
         const token = jwt.sign({ 
             username: user.username,
             userId: userObject._id.toString() }, 
-            'hardcoded-secret',
+             RSA_PRIVATE_KEY,
             { expiresIn: '1h' });
 
 
