@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../actions/userActions';
 import { useSelector } from 'react-redux';
+const apiUrl = process.env.REACT_APP_CINEMA_API_URL;
 
 function Users() {  
   const token = useSelector(state => state.user.token);
@@ -17,7 +18,7 @@ function Users() {
   const fetchUsers = useCallback(async () => { 
     try {
       //const response = await axios.get('http://localhost:4824/combinedData', {
-      const response = await axios.get(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData`, {
+      const response = await axios.get(`${apiUrl}/combinedData`, {
         headers: { "x-access-token": token }      
       });
       if (response.status === 200) {        

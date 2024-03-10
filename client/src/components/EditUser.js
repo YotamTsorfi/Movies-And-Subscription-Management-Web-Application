@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPermissions, logoutUser } from '../actions/userActions';
+const apiUrlCinema = process.env.REACT_APP_CINEMA_API_URL;
 
 function EditUser() {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ function EditUser() {
     // Fetch the user data when the component mounts
     const fetchUser = async () => {
       //const response = await axios.get(`http://localhost:4824/combinedData/${id}`, {
-      const response = await axios.get(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData/${id}`, {
+      const response = await axios.get(`${apiUrlCinema}/combinedData/${id}`, {
         headers: { "x-access-token": token },  
       });
       const userData = response.data;
@@ -86,7 +87,7 @@ function EditUser() {
     // Update the user
     try {
       //const response = await axios.put(`http://localhost:4824/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
-      const response = await axios.put(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
+      const response = await axios.put(`${apiUrlCinema}/combinedData/${user.Id}`, { ...user, Permissions: permissions }, {
         headers: { "x-access-token": token }
       });
       if (response.status === 200) {

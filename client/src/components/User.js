@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { logoutUser } from '../actions/userActions';
 import { useDispatch } from 'react-redux';
+const apiUrl = process.env.REACT_APP_CINEMA_API_URL;
 
 function User({ user, refreshUsers }) {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function User({ user, refreshUsers }) {
     // Delete the user
     try {
       //const response = await axios.delete(`http://localhost:4824/combinedData/${user.Id}`, {
-      const response = await axios.delete(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData/${user.Id}`, {
+      const response = await axios.delete(`${apiUrl}/combinedData/${user.Id}`, {
         headers: { "x-access-token": token }
       });
       if (response.status === 200) {

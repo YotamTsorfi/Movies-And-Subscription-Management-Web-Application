@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { logoutUser } from '../actions/userActions';
 import { useDispatch } from 'react-redux';
+const apiUrlSubs = process.env.REACT_APP_SUBSCRIPTIONS_API_URL;
 
 function MoviesWatched({ memberId }) {
 
@@ -21,7 +22,7 @@ function MoviesWatched({ memberId }) {
     const fetchSubscriptions = useCallback(async () => {
         try {
           //const response = await axios.get(`http://localhost:4321/subscriptions/${memberId}`,{
-          const response = await axios.get(`${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/${memberId}`,{
+          const response = await axios.get(`${apiUrlSubs}/subscriptions/${memberId}`,{
             headers: { 'x-access-token': token }          
           });
           setMemberSubscriptions(response.data);
@@ -40,7 +41,7 @@ function MoviesWatched({ memberId }) {
     const fetchUnwatchedMovies = async () => {
         try {
             //const response = await axios.get(`http://localhost:4321/subscriptions/unwatched/${memberId}`,{
-            const response = await axios.get(`${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/unwatched/${memberId}`,{
+            const response = await axios.get(`${apiUrlSubs}/subscriptions/unwatched/${memberId}`,{
                 headers: { 'x-access-token': token }
             });
             setUnwatchedMovies(response.data);
@@ -60,8 +61,8 @@ function MoviesWatched({ memberId }) {
             const url = memberSubscriptions.length > 0
                 // ? `http://localhost:4321/subscriptions/update/${memberId}`
                 // : `http://localhost:4321/subscriptions/create`;
-                ? `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/update/${memberId}`
-                : `${process.env.REACT_APP_SUBSCRIPTIONS_API_URL}/subscriptions/create`;
+                ? `${apiUrlSubs}/subscriptions/update/${memberId}`
+                : `${apiUrlSubs}/subscriptions/create`;
     
                 const response = await axios.post(url, {
                     memberId,

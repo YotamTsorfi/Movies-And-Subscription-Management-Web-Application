@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { logoutUser } from '../actions/userActions';
 import { useDispatch } from 'react-redux';
+const apiUrlCinema = process.env.REACT_APP_CINEMA_API_URL;
 
 const permissionsList = [
   'View Subscriptions',
@@ -65,7 +66,7 @@ function AddUser() {
   
       // Make a POST request to the server to save the user data
       //const response = await axios.post('http://localhost:4824/combinedData', userToSave, {
-      const response = await axios.post(`${process.env.REACT_APP_CINEMA_API_URL}/combinedData`, userToSave, {
+      const response = await axios.post(`${apiUrlCinema}/combinedData`, userToSave, {
         headers: { "x-access-token": token },  
       });
   

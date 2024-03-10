@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Typography } from '@mui/material';
+const apiUrlCinema = process.env.REACT_APP_CINEMA_API_URL;
 
 function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -13,11 +14,11 @@ function CreateAccount() {
     try {
     //todo Need to change to post
       //const response = await axios.get('http://localhost:4824/users/' + username);
-      const response = await axios.get(`${process.env.REACT_APP_CINEMA_API_URL}/users/` + username);
+      const response = await axios.get(`${apiUrlCinema}/users/` + username);
       if (response.status === 200 && response.data.userId) {                
         // Store the password in the database at the same user
         //const registerResponse = await axios.post('http://localhost:4824/users/register-existing', {
-        const registerResponse = await axios.post(`${process.env.REACT_APP_CINEMA_API_URL}/users/register-existing`, {
+        const registerResponse = await axios.post(`${apiUrlCinema}/users/register-existing`, {
             username: username,
             password: password
             });

@@ -1,18 +1,19 @@
 import axios from 'axios';
+const apiUrl = process.env.REACT_APP_CINEMA_API_URL;
 
 export const loginUser = (username, password) => {
 
   return async (dispatch) => {
     try {
       //const response = await axios.post('http://localhost:4824/auth/login', { username, password });    
-      const response = await axios.post(`${process.env.REACT_APP_CINEMA_API_URL}/auth/login`, { username, password });    
+      const response = await axios.post(`${apiUrl}/auth/login`, { username, password });    
 
       // Check if the username is 'admin'
       const isAdmin = username.toLowerCase() === 'admin';
 
       // Fetch the permissions for the user
       //const permissionsResponse = await axios.get(`http://localhost:4824/permissionsfile/${response.data.userId}`);
-      const permissionsResponse = await axios.get(`${process.env.REACT_APP_CINEMA_API_URL}/permissionsfile/${response.data.userId}`);
+      const permissionsResponse = await axios.get(`${apiUrl}/permissionsfile/${response.data.userId}`);
       const permissions = permissionsResponse.data.permissions;
 
       dispatch({ type: 'USER_LOGIN_SUCCESS', payload: {token : response.data.token, userId: response.data.userId, username, isAdmin, permissions} });
