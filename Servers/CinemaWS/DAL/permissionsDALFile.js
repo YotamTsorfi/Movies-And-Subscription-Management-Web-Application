@@ -1,5 +1,6 @@
+const path = require('path');
 const jsonfile = require('jsonfile');
-const file = './data/permissions.json';
+const file = path.join(__dirname, '..', 'data', 'permissions.json');
 
 const getAllPermissions = () => {
     return new Promise((resolve, reject) => {
