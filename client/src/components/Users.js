@@ -27,7 +27,7 @@ function Users() {
     }
     catch (error) {
       console.error('Error getting users', error);
-      dispatch(logoutUser);
+      dispatch(logoutUser());
       navigate("/login");
     }
   }, [token, navigate, dispatch]);
