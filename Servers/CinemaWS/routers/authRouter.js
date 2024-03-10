@@ -22,11 +22,11 @@ router.post('/login', async (req, res) => {
     if (await userBL.validatePassword(userObject, password)) {
       
         //Gettting ipAddress as a private key
-        const RSA_PRIVATE_KEY = process.env.JWT_SECRET_KEY;
+        //const RSA_PRIVATE_KEY = process.env.JWT_SECRET_KEY;
         const token = jwt.sign({ 
             username: user.username,
             userId: userObject._id.toString() }, 
-            RSA_PRIVATE_KEY,
+            'hardcoded-secret',
             { expiresIn: '1h' });
 
 
