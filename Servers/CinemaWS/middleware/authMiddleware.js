@@ -3,7 +3,7 @@ const usersFileBL = require('../BLL/usersFileBL');
 
 function verifyToken(req, res, next) {
   const token = req.headers['x-access-token'];
-  const RSA_PRIVATE_KEY = req.socket.remoteAddress;
+  const RSA_PRIVATE_KEY = process.env.JWT_SECRET_KEY;
   
   if (!token) {
     return res.status(403).send({ auth: false, message: 'No token provided.' });
