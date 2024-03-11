@@ -14,15 +14,18 @@ function Users() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const fetchUsers = useCallback(async () => { 
     try {
       //const response = await axios.get('http://localhost:4824/combinedData', {
+      setLoading(true);
       const response = await axios.get(`${apiUrl}/combinedData`, {
         headers: { "x-access-token": token }      
       });
       if (response.status === 200) {        
         setUsers(response.data);
+        setLoading(false);
       }
     }
     catch (error) {
@@ -36,11 +39,13 @@ function Users() {
     fetchUsers();
   }, [fetchUsers]);
 
-
-
   const handleLogout = () => {
     dispatch(logoutUser()); 
     navigate('/login');
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (
