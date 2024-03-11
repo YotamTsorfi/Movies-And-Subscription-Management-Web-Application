@@ -36,8 +36,10 @@ function Users() {
   }, [token, navigate, dispatch]);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    if(token){
+      fetchUsers();
+    }
+  }, [token, fetchUsers]);
 
   const handleLogout = () => {
     dispatch(logoutUser()); 
