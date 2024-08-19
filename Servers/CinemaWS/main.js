@@ -3,14 +3,13 @@ const rateLimit = require("express-rate-limit");
 
 //Routers
 const userRouter = require("./routers/UserRouter");
-const userFileRouter = require('./routers/UsersFileRouter');
-const permissionsFileRouter = require('./routers/permissionsFileRouter');
+const userFileRouter = require("./routers/UsersFileRouter");
+const permissionsFileRouter = require("./routers/permissionsFileRouter");
 const authRouter = require("./routers/authRouter");
 const combinedDataRouter = require("./routers/CombinedDataRouter");
-
-
+require("dotenv").config();
 const app = express();
-const connectDB = require('./configs/database');
+const connectDB = require("./configs/database");
 const cors = require("cors");
 const path = require("path");
 
@@ -51,13 +50,16 @@ app.use("/auth", authRouter);
 app.use("/combinedData", combinedDataRouter);
 
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static('build'));
+app.use(express.static("build"));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
 });
 
-app.listen(port, '0.0.0.0', () => {
+// app.listen(port, '0.0.0.0', () => {
+//   console.log(`App is listening at http://localhost:${port}`);
+// });
+
+app.listen(port, () => {
   console.log(`App is listening at http://localhost:${port}`);
 });
-  

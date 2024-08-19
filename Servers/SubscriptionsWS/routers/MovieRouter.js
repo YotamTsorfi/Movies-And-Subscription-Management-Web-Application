@@ -1,7 +1,7 @@
 const movieBL = require("../BLL/movieBL");
 const express = require("express");
 const router = express.Router();
-const verifyToken = require('../middleware/authMiddleware');
+const verifyToken = require("../middleware/authMiddleware");
 
 router.route("/").get(verifyToken, async function (req, res) {
   try {

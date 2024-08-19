@@ -1,37 +1,43 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Typography } from '@mui/material';
-const apiUrlCinema = process.env.REACT_APP_CINEMA_API_URL;
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Button, TextField, Typography } from "@mui/material";
+// const apiUrlCinema = process.env.REACT_APP_CINEMA_API_URL;
 
 function CreateAccount() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleCreate = async () => {
     try {
-    //todo Need to change to post
-      //const response = await axios.get('http://localhost:4824/users/' + username);
-      const response = await axios.get(`${apiUrlCinema}/users/` + username);
-      if (response.status === 200 && response.data.userId) {                
+      //todo Need to change to post
+      const response = await axios.get(
+        "http://localhost:4824/users/" + username
+      );
+      // const response = await axios.get(`${apiUrlCinema}/users/` + username);
+      if (response.status === 200 && response.data.userId) {
         // Store the password in the database at the same user
-        //const registerResponse = await axios.post('http://localhost:4824/users/register-existing', {
-        const registerResponse = await axios.post(`${apiUrlCinema}/users/register-existing`, {
+        const registerResponse = await axios.post(
+          "http://localhost:4824/users/register-existing",
+          {
+            // const registerResponse = await axios.post(
+            //   `${apiUrlCinema}/users/register-existing`,
+            //   {
             username: username,
-            password: password
-            });
+            password: password,
+          }
+        );
         if (registerResponse.status === 201) {
-            setError(null);            
-            navigate('/login');
-            }
-
+          setError(null);
+          navigate("/login");
+        }
       } else {
-        setError('User creation failed');
+        setError("User creation failed");
       }
     } catch (error) {
-      setError('User does not exist');
+      setError("User does not exist");
     }
   };
 
@@ -41,9 +47,9 @@ function CreateAccount() {
       <TextField
         label="User Name"
         value={username}
-        onChange={(e) => { 
-            setUsername(e.target.value); 
-            setError(null);
+        onChange={(e) => {
+          setUsername(e.target.value);
+          setError(null);
         }}
         margin="normal"
       />
@@ -52,12 +58,12 @@ function CreateAccount() {
         label="Password"
         value={password}
         onChange={(e) => {
-             setPassword(e.target.value);
-             setError(null);            
-            }}
+          setPassword(e.target.value);
+          setError(null);
+        }}
         margin="normal"
       />
-        <br />
+      <br />
       <Button variant="contained" color="primary" onClick={handleCreate}>
         Create
       </Button>

@@ -1,0 +1,8 @@
+{
+  "watch": ["src"],
+  "ignore": [
+    "C:/Full_Stack_Final_Project/Servers/CinemaWS/data/Permissions.json",
+    "C:/Full_Stack_Final_Project/Servers/CinemaWS/data/Users.json"
+  ],
+  "ext": "js,json"
+}

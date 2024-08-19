@@ -1,0 +1,49 @@
+#Creating a service named: full-stack-app.service 
+#at /etc/systemd/system
+#touch full-stack-app.service 
+#nano full-stack-app.service
+#-----------------------------------------
+
+[Unit]
+Description=full_stack_app
+
+[Service]
+ExecStart=/bin/bash /usr/local/bin/start-all.sh
+Restart=always
+User=root
+Group=root
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+
+
+##Creating a bash script to execute all 3 service for the app
+touch /usr/local/bin/start-all.sh
+nano /usr/local/bin/start-all.sh
+
+at /usr/local/bin/start-all.sh
+
+
+#!/bin/bash
+export NVM_DIR="/root/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Start SubscriptionsWS
+cd /fullstack_FinalProject/Servers/SubscriptionsWS
+npm start &
+
+# Start Client
+cd /fullstack_FinalProject/client
+serve -s build &
+
+# Start CinemaWS and keep it in the foreground
+cd /fullstack_FinalProject/Servers/CinemaWS
+npm start
+
+
+
+Checking the service:
+sudo systemctl status full-stack-app
+

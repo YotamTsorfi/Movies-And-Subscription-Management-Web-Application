@@ -1,11 +1,15 @@
 const memberBL = require("../BLL/memberBL");
 const express = require("express");
 const router = express.Router();
-const verifyToken = require('../middleware/authMiddleware');
+const verifyToken = require("../middleware/authMiddleware");
 
 router.route("/").get(verifyToken, async function (req, res) {
   try {
+    // console.log("get all membersList");
+
     let members = await memberBL.getMembers();
+    // console.log("members: ", members);
+
     res.json(members);
   } catch (err) {
     res.status(500).send(err);
